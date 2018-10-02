@@ -1,4 +1,4 @@
-# Learn 30 things in 30 days - My challenge as a developer
+# Learn 30 things in 30 days
 
 AS a developer, the major challenge is continuously learning new technologies!!!
 
