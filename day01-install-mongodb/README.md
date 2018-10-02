@@ -66,5 +66,124 @@ It shows MongoDB shell
 
 Now you are able to run MongoDB commands in the shell.
 
+#### Create database
 
+```
+> use testdb
+switched to db testdb
+```
+To check current database list, use the command show dbs.
+ ```
+ > show dbs
+ admin   0.000GB
+ config  0.000GB
+ local   0.000GB
+ ```
+ testdb is not in the list, to create database, you need at least create one document into it
+ ```
+ > db.pet.insert({"id":1, "name":"Goldfish", "category":"Fish"})
+ WriteResult({ "nInserted" : 1 })
+ > show dbs
+ admin   0.000GB
+ config  0.000GB
+ local   0.000GB
+ testdb  0.000GB
+ ```
  
+#### Drop database
+ ```
+ > use testdb
+ switched to db testdb
+ > db
+ testdb
+ > db.dropDatabase()
+ { "dropped" : "testdb", "ok" : 1 }
+ > show dbs
+ admin   0.000GB
+ config  0.000GB
+ local   0.000GB
+ ```
+ 
+####Create Collection
+ ```
+> db.createCollection("myCollection", {capped: true, autoIndexId: true, size: 50000})
+{
+        "note" : "the autoIndexId option is deprecated and will be removed in a future release",
+        "ok" : 1
+}
+> show collections
+myCollection
+```                               
+#### Drop collection
+ ```
+ > use testdb
+ switched to db testdb
+ > show collections
+ myCollection
+ > db.myCollection.drop()
+ true
+ > show collections
+ >
+ ```
+ 
+#### Insert document
+ ```
+ > db.pet.insert({"id":1, "name":"Goldfish", "category":"fish"})
+ WriteResult({ "nInserted" : 1 })
+ ```
+ 
+#### Query
+ 
+ find all
+ ```
+ > db.pet.find().pretty()
+ {
+         "_id" : ObjectId("5bb2e1906ea39748805893ce"),
+         "id" : 1,
+         "name" : "Goldfish",
+         "category" : "fish"
+ }
+ ```
+ find by id
+ ```
+ > db.pet.find({"id":1}).pretty()
+ {
+         "_id" : ObjectId("5bb2e1906ea39748805893ce"),
+         "id" : 1,
+         "name" : "Goldfish",
+         "category" : "fish"
+ }
+ ```
+ find by category
+ ```
+  > db.pet.find({"category":"fish"}).pretty()
+  {
+          "_id" : ObjectId("5bb2e1906ea39748805893ce"),
+          "id" : 1,
+          "name" : "Goldfish",
+          "category" : "fish"
+  }
+  ```
+  
+#### Update
+```
+> db.pet.update({"id":1}, {$set:{"name":"Angelfish"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.pet.find({"id":1}).pretty()
+{
+        "_id" : ObjectId("5bb2e1906ea39748805893ce"),
+        "id" : 1,
+        "name" : "Angelfish",
+        "category" : "fish"
+}
+```
+
+#### Delete
+```
+> db.pet.remove({"id":1})
+WriteResult({ "nRemoved" : 1 })
+> db.pet.find({"id":1}).pretty()
+>
+```
+
+This is for day 1, very basic of MongoDB but at least it's a good start.
