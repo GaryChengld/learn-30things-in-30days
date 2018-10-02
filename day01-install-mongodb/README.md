@@ -54,4 +54,17 @@ mongod --dbpath \var\mongodb\data --logpath \var\mongodb\log\mongod.log
 
 This will show waiting for connections message on the console output, which indicates that the mongod.exe process is running successfully. And you can find the database data files are created in \var\mongodb\data directory, and logs are added to \var\mongodb\log\mongod.log file.
 
+To run the MongoDB commands, you need to open another command prompt and execute following command.
+```
+cd C:\myfolder\mongodb
+cd bin
+mongo
+```
+It shows MongoDB shell
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46324663-a0fc0b80-c5c2-11e8-82a1-a03f3b7f690a.PNG"/>
+
+Now you are able to run MongoDB commands in the shell.
+
+
  
