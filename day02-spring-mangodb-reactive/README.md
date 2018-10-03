@@ -72,16 +72,23 @@ public class Product {
 
 #### Create Product repository interface
 ```java
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Document(collection = "product")
-public class Product {
-    @EqualsAndHashCode.Include
-    @Id
-    private String id;
-    private String name;
-    @TextIndexed
-    private String category;
+public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
+
+    /**
+     * Find products by category
+     *
+     * @param category
+     * @return
+     */
+    Flux<Product> findByCategory(String category);
+
+    /**
+     * Find product by id
+     *
+     * @param category
+     * @return
+     */
+    Mono<Product> findById(String category);
 }
 ```
 
