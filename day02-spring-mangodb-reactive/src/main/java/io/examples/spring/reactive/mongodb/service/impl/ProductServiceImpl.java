@@ -3,7 +3,6 @@ package io.examples.spring.reactive.mongodb.service.impl;
 import io.examples.spring.reactive.mongodb.entity.Product;
 import io.examples.spring.reactive.mongodb.repository.ProductRepository;
 import io.examples.spring.reactive.mongodb.service.ProductService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -13,7 +12,6 @@ import reactor.core.publisher.Mono;
  * @author Gary Cheng
  */
 @Service
-@Slf4j
 public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
