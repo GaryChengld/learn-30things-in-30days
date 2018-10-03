@@ -1,20 +1,23 @@
 package io.examples.spring.reactive.mongodb.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @author Gary Cheng
  */
+
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Document(collection = "product")
 public class Product {
     @EqualsAndHashCode.Include
-    private Integer id;
+    @Id
+    private String id;
     private String name;
+    @TextIndexed
     private String category;
 }

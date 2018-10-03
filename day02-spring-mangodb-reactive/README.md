@@ -53,5 +53,56 @@ spring:
       database: storedb
       host: localhost
       port: 27017
-```      
+```
 
+#### Create Product entity
+```java
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Document(collection = "product")
+public class Product {
+    @EqualsAndHashCode.Include
+    @Id
+    private String id;
+    private String name;
+    @TextIndexed
+    private String category;
+}
+```
+
+#### Create Product repository interface
+```java
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Document(collection = "product")
+public class Product {
+    @EqualsAndHashCode.Include
+    @Id
+    private String id;
+    private String name;
+    @TextIndexed
+    private String category;
+}
+```
+
+#### Repository with MongoDB
+The repository, making use of Spring data mongo reactive we are extending our interface which annotated @Repository with ReactiveMongoRepository 
+```java
+public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
+    /**
+     * Find products by category
+     *
+     * @param category
+     * @return
+     */
+    Flux<Product> findByCategory(String category);
+
+    /**
+     * Find product by id
+     *
+     * @param category
+     * @return
+     */
+    Mono<Product> findById(String category);
+}
+```
