@@ -29,7 +29,7 @@ This sample application will create a RESTful service implements resource as bel
 |PUT|/v1/pet/{id}|Update a pet|
 |Delete|/v1/pet/{id}|Delete a pet|
 
-####Spring-boot main application
+#### Spring-boot main application
 ```java
 @SpringBootApplication
 @EnableReactiveMongoRepositories
@@ -42,7 +42,7 @@ public class ReactiveMongoApp {
 ```
 We added @EnableReactiveMongoRepositories for configuring MongoDb and Mongo Reactive Repository and we’re using @SpringBootApplication as our primary application configuration class.
 
-####Application configuration applicaiton.yml
+#### Application configuration applicaiton.yml
 ```yaml
 server:
   port: 9080
