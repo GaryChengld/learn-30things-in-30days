@@ -1,0 +1,10 @@
+#Application configuration
+server:
+  port: 9080
+
+spring:
+  data:
+    mongodb:
+      database: storedb
+      host: localhost
+      port: 27017
