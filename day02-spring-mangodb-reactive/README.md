@@ -70,30 +70,9 @@ public class Product {
 }
 ```
 
-#### Create Product repository interface
-```java
-public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
-
-    /**
-     * Find products by category
-     *
-     * @param category
-     * @return
-     */
-    Flux<Product> findByCategory(String category);
-
-    /**
-     * Find product by id
-     *
-     * @param category
-     * @return
-     */
-    Mono<Product> findById(String category);
-}
-```
-
 #### Repository with MongoDB
-The repository, making use of Spring data mongo reactive we are extending our interface which annotated @Repository with ReactiveMongoRepository 
+The repository, making use of Spring data mongo reactive we are extending our interface which annotated @Repository with ReactiveMongoRepository, doesn't need create implementation, spring data will generate it during runtime.
+
 ```java
 public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
     /**
