@@ -83,4 +83,72 @@ PONG
 redis 192.168.99.100:6379>
 ```
 
+## Redis commands
+
+**PING** -- to check whether the server is running or not.
+```
+redis 192.168.99.100:6379> ping
+PONG
+redis 192.168.99.100:6379>
+```
+
+**SET** -- Writing Data
+```
+redis 192.168.99.100:6379> set mykey "myvalue"
+OK
+redis 192.168.99.100:6379>
+```
+
+**GET** -- Reading data
+```
+redis 192.168.99.100:6379> get mykey
+"myvalue"
+redis 192.168.99.100:6379>
+```
+
+**DEL** -- Deleting data
+```
+redis 192.168.99.100:6379> del mykey
+(integer) 1
+redis 192.168.99.100:6379> get mykey
+(nil)
+redis 192.168.99.100:6379>
+```
+
+**SETNX** -- Non-Destructive Write, creates a key in memory if and only if the key does not exist already 
+```
+redis 192.168.99.100:6379> SETNX mykey "myvalue"
+(integer) 1
+redis 192.168.99.100:6379> GET mykey
+"myvalue"
+redis 192.168.99.100:6379> SETNX mykey "mynewvalue"
+(integer) 0
+redis 192.168.99.100:6379> GET mykey
+"myvalue"
+redis 192.168.99.100:6379>
+```
+
+**EXPIRE**  Specify how long that key should stay stored in memory
+```
+redis 192.168.99.100:6379> SET mykey "myvalue"
+OK
+redis 192.168.99.100:6379> expire mykey 5
+(integer) 1
+```
+After 5 seconds
+```
+redis 192.168.99.100:6379> get mykey
+(nil)
+redis 192.168.99.100:6379>
+```
+
+**EXIST** Check key is exists or not
+```
+redis 192.168.99.100:6379> set mykey "myvalue"
+OK
+redis 192.168.99.100:6379> exists mykey
+(integer) 1
+redis 192.168.99.100:6379>
+```
+
   
