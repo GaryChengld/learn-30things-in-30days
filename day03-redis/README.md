@@ -150,7 +150,7 @@ redis 192.168.99.100:6379> exists mykey
 (integer) 1
 redis 192.168.99.100:6379>
 ```
-### Resource3
+### Resources
  - [Official website](https://redis.io/)
  - [Documentation](https://redis.io/documentation)
  - [Commands](https://redis.io/commands)
