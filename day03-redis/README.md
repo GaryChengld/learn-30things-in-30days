@@ -151,10 +151,10 @@ redis 192.168.99.100:6379> exists mykey
 redis 192.168.99.100:6379>
 ```
 ### Resource3
-[Official website](https://redis.io/)
-[Documentation](https://redis.io/documentation)
-[Commands](https://redis.io/commands)
-[Top 10 Redis Interview Questions](https://career.guru99.com/top-10-redis-interview-questions/)
-[Cheat Sheet](https://www.cheatography.com/tasjaevan/cheat-sheets/redis/)
+ -[Official website](https://redis.io/)
+ - [Documentation](https://redis.io/documentation)
+ - [Commands](https://redis.io/commands)
+ - [Top 10 Redis Interview Questions](https://career.guru99.com/top-10-redis-interview-questions/)
+ - [Cheat Sheet](https://www.cheatography.com/tasjaevan/cheat-sheets/redis/)
 
   
