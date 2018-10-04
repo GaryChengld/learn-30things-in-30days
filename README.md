@@ -6,7 +6,7 @@ With a fast changing world, there's always new technical skills to master and ma
 
 I'm taking a challenge and will learn a technology a day for 30 days, the challenge started on _October 1, 2018_. After my daily work, I plan to spend about 2-3 hours to learn a new technology and write it down on my GitHub (include source code if coding is required), my focus is MicroServices related tools and technologies.
 
- - [Day 1 (October 1, 2018) - Install and use MongoDB](day01-install-mongodb/README.md)
- - [Day 2 (October 2, 2018) - Reactive programming on Spring-boot and MangoDB](day02-spring-mangodb-reactive/README.md)
- - [Day 3 (October 3, 2018) - Redis: An open-source in-memory key-value database](day03-redis/README.md)
+ - [Day 1 (2018-10-01) - Install and use MongoDB](day01-install-mongodb/README.md)
+ - [Day 2 (2018-10-02) - Reactive programming on Spring-boot and MangoDB](day02-spring-mangodb-reactive/README.md)
+ - [Day 3 (2018-10-03) - Redis: An open-source in-memory key-value database](day03-redis/README.md)
 
