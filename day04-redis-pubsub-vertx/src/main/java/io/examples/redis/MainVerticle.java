@@ -70,7 +70,7 @@ public class MainVerticle extends AbstractVerticle {
 
     private void publishMessageHandler(RoutingContext context) {
         context.request().setExpectMultipart(true);
-        context.request().endHandler(req -> {
+        context.request().endHandler(v -> {
             String message = context.request().getFormAttribute("message");
             if (null != message && message.length() > 0) {
                 redisClient.rxPublish(REDIS_CHANNEL, message)

@@ -213,7 +213,7 @@ Let's take a look on Redis publish and subscribe command first.
  
      private void publishMessageHandler(RoutingContext context) {
          context.request().setExpectMultipart(true);
-         context.request().endHandler(req -> {
+         context.request().endHandler(v -> {
              String message = context.request().getFormAttribute("message");
              if (null != message && message.length() > 0) {
                  redisClient.rxPublish(REDIS_CHANNEL, message)
@@ -224,3 +224,42 @@ Let's take a look on Redis publish and subscribe command first.
      }
  }
  ```
+ 
+ ### Build
+ ```
+ mvn clean package
+ ```
+ ### Start
+ ```
+java -jar target\redis-pubsub-0.0.1-SNAPSHOT-fat.jar -conf src\conf\config.json
+ ```
+
+Now you can see a http server started on port 9080
+```
+E:\Workspaces\learn-30things-in-30days\day04-redis-pubsub-vertx>java -jar target\redis-pubsub-0.0.1-SNAPSHOT-fat.jar -co
+nf src\conf\config.json
+00:35:23.537 [vert.x-eventloop-thread-0] DEBUG io.examples.redis.MainVerticle - start http server
+Oct 05, 2018 12:35:25 AM io.vertx.core.impl.BlockedThreadChecker
+WARNING: Thread Thread[vert.x-eventloop-thread-0,5,main] has been blocked for 2003 ms, time limit is 2000
+Oct 05, 2018 12:35:25 AM io.vertx.core.impl.launcher.commands.VertxIsolatedDeployer
+INFO: Succeeded in deploying verticle
+00:35:25.703 [vert.x-eventloop-thread-0] DEBUG io.examples.redis.MainVerticle - http server started on port 9080
+```
+
+Open url http://localhost:9080/publish in browser
+
+  <img width="660" src="https://user-images.githubusercontent.com/3359299/46516368-4b7c6480-c837-11e8-9618-af11c29f96ef.PNG" />
+
+Enter the message in text box, then click submit button, the message will be displayed in Redis client
+```
+redis 127.0.0.1:6379> subscribe my-channel
+Reading messages... (press Ctrl-C to quit)
+1) "message"
+2) "my-channel"
+3) "the message"
+1) "message"
+2) "my-channel"
+3) "Second message"
+```
+
+This is all for today, you can find the complete source code under [this folder](src).
