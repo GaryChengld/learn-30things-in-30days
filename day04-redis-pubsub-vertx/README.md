@@ -78,6 +78,52 @@ Let's take a look on Redis publish and subscribe command first.
    </dependencies>
  ```
  
- First step, create a program which can publish messages to Redis channel only
+ First step, create a simple program which can publish messages to Redis channel only
+ 
+ Configuration file - config.json
+ ```json
+ {
+   "redis": {
+     "host": "127.0.0.1",
+     "port": 6379
+   }
+ }
+ ```
+ Create Vert.x verticle
+ ```java
+ public class MainVerticle extends AbstractVerticle {
+     private static final Logger logger = LoggerFactory.getLogger(MainVerticle.class);
+ 
+     private static final String KEY_REDIS = "redis";
+     private static final String KEY_HOST = "host";
+     private static final String KEY_PORT = "port";
+     private static final String REDIS_CHANNEL = "my-channel";
+ 
+     // Convenience method so you can run it in IDE
+     public static void main(String[] args) {
+         JsonObject config = new JsonObject();
+         config.put(KEY_REDIS, new JsonObject().put(KEY_HOST, "127.0.0.1").put(KEY_PORT, 6379));
+         Vertx vertx = Vertx.vertx();
+         vertx.rxDeployVerticle(MainVerticle.class.getName(), new DeploymentOptions().setConfig(config))
+                 .subscribe(id -> logger.debug("MainVerticle deployed successfully with deployment ID {}", id),
+                         ex -> {
+                             logger.error(ex.getLocalizedMessage());
+                             vertx.close();
+                         });
+     }
+ 
+     @Override
+     public void start() {
+         JsonObject redisConfig = this.config().getJsonObject(KEY_REDIS);
+         RedisOptions config = new RedisOptions().setHost(redisConfig.getString(KEY_HOST)).setPort(redisConfig.getInteger(KEY_PORT));
+         RedisClient redis = RedisClient.create(vertx, config);
+         vertx.setPeriodic(5000, id -> redis.rxPublish(REDIS_CHANNEL, "message from Vert.x")
+                 .subscribe(l -> logger.debug("Message sent"), t -> logger.debug(t.getLocalizedMessage()))
+         );
+     }
+ }
+ ```
+ Once the verticle started, it sends message to Redis channel every 5 second, execute this program, you can see the messages are displayed in Redis client which subscribe "my-channel" channel.
+   <img width="660" src="https://user-images.githubusercontent.com/3359299/46514294-1538e800-c82b-11e8-90cf-1ef431605ad2.PNG" />
  
  
