@@ -127,6 +127,7 @@ Let's take a look on Redis publish and subscribe command first.
    <img width="660" src="https://user-images.githubusercontent.com/3359299/46514294-1538e800-c82b-11e8-90cf-1ef431605ad2.PNG" />
  
  Next step, I will create a web page which can publish message to Redis channel
+ 
  Change config.json
  ```
  {
