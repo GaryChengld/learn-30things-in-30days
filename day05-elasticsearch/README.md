@@ -10,7 +10,7 @@ I did learn [Apache Solr](http://http://lucene.apache.org/solr/) (another open-s
 
 ## Install ElasticSearch on my windows 10
 
->ElasticSearch is written in java, you have java/jre installed in your windows system
+>ElasticSearch is written in java, have java/jre be installed in your windows system
 
 ElasticSearch can be downloaded from [https://www.elastic.co/downloads/elasticsearch](https://www.elastic.co/downloads/elasticsearch)
 
@@ -408,6 +408,6 @@ Response:
 } 
 ```
 
-You can found more in this [Youtube tutorial](https://www.youtube.com/watch?v=ksTTlXNLick)
+For more on learning ElasticSearch, check out this [Youtube tutorial](https://www.youtube.com/watch?v=ksTTlXNLick).
 
  
