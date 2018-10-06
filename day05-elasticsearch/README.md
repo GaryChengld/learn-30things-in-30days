@@ -2,7 +2,7 @@
 
 Today is the fifth day of my 30 days challenge, so far I'm enjoy and feel comfortable of it.
 
-I did learn [Apache Solr](http://http://lucene.apache.org/solr/) (another open-source search platform based on Lucene) 3 years ago, maybe this is helpful for me to learn ElasticSearch.
+I did learn [Apache Solr](http://http://lucene.apache.org/solr/) (another open-source search platform based on Lucene) 3 years ago, believe it can help me understand EasticSearch easier.
 
 ## What is ElasticSearch
 
