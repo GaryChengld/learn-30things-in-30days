@@ -91,9 +91,9 @@ I'm using postman to do ElasticSearch operations, and use movie as sample docume
 
 ### Index a new document
 In postman, create below request
-url: http://localhost:9200/moviedb/movies/tt0076759
-method: POST
-body: 
+ - url: http://localhost:9200/moviedb/movies/tt0076759
+ - method: POST
+ - body: 
 ```
 {
 	"title": "Star Wars: Episode IV - A New Hope",
@@ -127,7 +127,102 @@ A new movie document is indexed successfully.
 Open browser, type in url http://localhost:9200/moviedb/movies/tt0076759, it shows
 
   <img width="880" src="https://user-images.githubusercontent.com/3359299/46566665-ea18cc00-c8f0-11e8-9316-41f3e8d0e88b.PNG" />
+  
+Now I'm insert more movie documents
+ - url: http://localhost:9200/moviedb/movies/tt0080684
+ - method: POST
+ - body: 
+```
+{
+	"title": "Star Wars: Episode V - The Empire Strikes Back",
+	"year": 1980,
+	"director": "Irvin Kershner",
+	"writer": "George Lucas",
+	"stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+	"description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+}
+```
+ - url: http://localhost:9200/moviedb/movies/tt0086190
+ - method: POST
+ - body: 
+```
+{
+	"title": "Star Wars: Episode VI - Return of the Jedi",
+	"year": 1983,
+	"director": "Richard Marquand",
+	"writer": "George Lucas",
+	"stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+	"description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+}
+```
 
+### Search document
+
+**Search all movies**
+ - url: http://localhost:9200/moviedb/movies/_search
+ - method: GET
+
+Response:
+```json
+{
+    "took": 3,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 3,
+        "max_score": 1,
+        "hits": [
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0076759",
+                "_score": 1,
+                "_source": {
+                    "title": "Star Wars: Episode IV - A New Hope",
+                    "year": 1977,
+                    "director": " George Lucas",
+                    "writer": " George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the evil Darth Vader."
+                }
+            },
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0086190",
+                "_score": 1,
+                "_source": {
+                    "title": "Star Wars: Episode VI - Return of the Jedi",
+                    "year": 1983,
+                    "director": "Richard Marquand",
+                    "writer": "George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+                }
+            },
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0080684",
+                "_score": 1,
+                "_source": {
+                    "title": "Star Wars: Episode V - The Empire Strikes Back",
+                    "year": 1980,
+                    "director": "Irvin Kershner",
+                    "writer": "George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+                }
+            }
+        ]
+    }
+}
+```
 
 
 
