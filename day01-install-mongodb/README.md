@@ -104,7 +104,7 @@ To check current database list, use the command show dbs.
  local   0.000GB
  ```
  
-####Create Collection
+#### Create Collection
  ```
 > db.createCollection("myCollection", {capped: true, autoIndexId: true, size: 50000})
 {
