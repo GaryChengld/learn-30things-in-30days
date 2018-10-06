@@ -223,8 +223,191 @@ Response:
     }
 }
 ```
+**Search with parameter**
+Syntax
+>http://localhost:9200/moviedb/movies/_search?q=key:value
 
+For example search by year=1977
+>http://localhost:9200/moviedb/movies/_search?q=year:1977
 
+Get Response:
+```json
+{
+    "took": 4,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 1,
+        "max_score": 1,
+        "hits": [
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0076759",
+                "_score": 1,
+                "_source": {
+                    "title": "Star Wars: Episode IV - A New Hope",
+                    "year": 1977,
+                    "director": " George Lucas",
+                    "writer": " George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the evil Darth Vader."
+                }
+            }
+        ]
+    }
+}
+```
 
+### Update a document
 
+ - url: http://localhost:9200/moviedb/movies/tt0076759
+ - method: PUT
+ - body: 
+```json
+{
+	"title": "Star Wars: Episode IV - A New Hope",
+	"year": 1977,
+	"director": "George Lucas",
+	"writer": "George Lucas",
+	"stars": "Mark Hamill, Harrison Ford, Carrie Fisher, David Prowse",
+	"description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the evil Darth Vader."
+}
+```
+Get response
+```json
+{
+    "_index": "moviedb",
+    "_type": "movies",
+    "_id": "tt0076759",
+    "_version": 2,
+    "result": "updated",
+    "_shards": {
+        "total": 2,
+        "successful": 1,
+        "failed": 0
+    },
+    "_seq_no": 2,
+    "_primary_term": 2
+}
+```
 
+### Delete a document
+ - url: http://localhost:9200/moviedb/movies/tt0076759
+ - method: DELETE
+Get response
+```json
+{
+    "_index": "moviedb",
+    "_type": "movies",
+    "_id": "tt0076759",
+    "_version": 3,
+    "result": "deleted",
+    "_shards": {
+        "total": 2,
+        "successful": 1,
+        "failed": 0
+    },
+    "_seq_no": 3,
+    "_primary_term": 2
+}
+``` 
+The movie tt0076759 is deleted.
+
+### Full text search examples
+
+ - url: http://localhost:9200/moviedb/movies/_search?q=title:Star
+ - method: GET
+
+Response
+```
+{
+    "took": 134,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 2,
+        "max_score": 0.2876821,
+        "hits": [
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0086190",
+                "_score": 0.2876821,
+                "_source": {
+                    "title": "Star Wars: Episode VI - Return of the Jedi",
+                    "year": 1983,
+                    "director": "Richard Marquand",
+                    "writer": "George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+                }
+            },
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0080684",
+                "_score": 0.2876821,
+                "_source": {
+                    "title": "Star Wars: Episode V - The Empire Strikes Back",
+                    "year": 1980,
+                    "director": "Irvin Kershner",
+                    "writer": "George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+                }
+            }
+        ]
+    }
+}
+```
+ - url: http://localhost:9200/moviedb/movies/_search?q=description:Solo
+ - method: GET
+ 
+Response:
+```
+{
+    "took": 3,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 1,
+        "max_score": 0.29058146,
+        "hits": [
+            {
+                "_index": "moviedb",
+                "_type": "movies",
+                "_id": "tt0086190",
+                "_score": 0.29058146,
+                "_source": {
+                    "title": "Star Wars: Episode VI - Return of the Jedi",
+                    "year": 1983,
+                    "director": "Richard Marquand",
+                    "writer": "George Lucas",
+                    "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                    "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+                }
+            }
+        ]
+    }
+} 
+```
+
+You can found more in this [Youtube tutorial](https://www.youtube.com/watch?v=ksTTlXNLick)
+
+ 
