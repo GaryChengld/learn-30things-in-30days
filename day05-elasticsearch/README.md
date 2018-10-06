@@ -78,6 +78,58 @@ Open a browser, type in http://http://localhost:9200/ on url, the browser shows
 ```
 Now ElasticSearch started successfully
 
+### ElasticSearch REST API URL format
+ElasticSearch URL format follow http://host:port/index/type
+for example
+>http://localhost:9200/moviedb/movies
+
+**index must be in lower case**
+
+I'm using postman to do ElasticSearch operations, and use movie as sample document
+
+  <img width="880" src="https://user-images.githubusercontent.com/3359299/46566539-855c7200-c8ee-11e8-830f-809c76dcad8d.PNG" />
+
+### Index a new document
+In postman, create below request
+url: http://localhost:9200/moviedb/movies/tt0076759
+method: POST
+body: 
+```
+{
+	"title": "Star Wars: Episode IV - A New Hope",
+	"year": 1977,
+	"director": " George Lucas",
+	"writer": " George Lucas",
+	"stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+	"description": "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee and two droids to save the galaxy from the Empire's world-destroying battle station, while also attempting to rescue Princess Leia from the evil Darth Vader."
+}
+```
+And click send button, get below response
+```
+{
+    "_index": "moviedb",
+    "_type": "movies",
+    "_id": "tt0076759",
+    "_version": 1,
+    "result": "created",
+    "_shards": {
+        "total": 2,
+        "successful": 1,
+        "failed": 0
+    },
+    "_seq_no": 0,
+    "_primary_term": 1
+}
+```
+  <img width="880" src="https://user-images.githubusercontent.com/3359299/46566639-7bd40980-c8f0-11e8-8c57-2d583a127b0b.PNG" />
+A new movie document is indexed successfully.
+
+Open browser, type in url http://localhost:9200/moviedb/movies/tt0076759, it shows
+
+  <img width="880" src="https://user-images.githubusercontent.com/3359299/46566665-ea18cc00-c8f0-11e8-9316-41f3e8d0e88b.PNG" />
+
+
+
 
 
 
