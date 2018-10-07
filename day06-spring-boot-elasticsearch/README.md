@@ -216,15 +216,98 @@ The RESTful service implements following resources
 |PUT|/v1/movie/{id}|Update a movie|
 |Delete|/v1/movie/{id}|Delete a movie|
 
-And below are the search results in browser
+And below are the testing results
 
-<img width="880" src="https://user-images.githubusercontent.com/3359299/46578403-5e28a200-c9cd-11e8-8545-d9d25de61c62.PNG" />
---
-<img width="880" src="https://user-images.githubusercontent.com/3359299/46578413-95974e80-c9cd-11e8-9a2d-b9e03f3c12c6.PNG" />
---
-<img width="880" src="https://user-images.githubusercontent.com/3359299/46578416-99c36c00-c9cd-11e8-84ea-a30ace19ce22.PNG" />
---
-<img width="880" src="https://user-images.githubusercontent.com/3359299/46578418-9def8980-c9cd-11e8-873b-4041e2a057d2.PNG" />
+**Find all movies**
+ - URL: http://localhost:9080/v1/movie
+ - Method: GET
+ - Result:
+ ```json
+ [
+     {
+         "id": "tt0086190",
+         "title": "Star Wars: Episode VI - Return of the Jedi",
+         "year": 1983,
+         "director": "Richard Marquand",
+         "writer": "George Lucas",
+         "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+     },
+     {
+         "id": "tt0080684",
+         "title": "Star Wars: Episode V - The Empire Strikes Back",
+         "year": 1980,
+         "director": "Irvin Kershner",
+         "writer": "George Lucas",
+         "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+     }
+ ]
+ ```
+ 
+**Find movie by ID**
+  - URL: http://localhost:9080/v1/movie/tt0080684
+  - Method: GET
+  - Result:
+```json
+{
+    "id": "tt0080684",
+    "title": "Star Wars: Episode V - The Empire Strikes Back",
+    "year": 1980,
+    "director": "Irvin Kershner",
+    "writer": "George Lucas",
+    "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+}
+```  
+  - URL: http://localhost:9080/v1/movie/123456
+  - Method: GET
+  - Result:
+```json
+{
+    "code": 1001,
+    "type": "Error",
+    "message": "Movie not found"
+}
+```  
+
+**Find movie by title**
+  - URL: http://localhost:9080/v1/movie/findByTitle/star
+  - Method: GET
+  - Result:
+```json
+[
+    {
+        "id": "tt0086190",
+        "title": "Star Wars: Episode VI - Return of the Jedi",
+        "year": 1983,
+        "director": "Richard Marquand",
+        "writer": "George Lucas",
+        "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+    },
+    {
+        "id": "tt0080684",
+        "title": "Star Wars: Episode V - The Empire Strikes Back",
+        "year": 1980,
+        "director": "Irvin Kershner",
+        "writer": "George Lucas",
+        "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+    }
+]
+```  
+**Find movie by description**
+  - URL: http://localhost:9080/v1/movie/findByDescription/Jedi
+  - Method: GET
+  - Result:
+```json
+[
+    {
+        "id": "tt0080684",
+        "title": "Star Wars: Episode V - The Empire Strikes Back",
+        "year": 1980,
+        "director": "Irvin Kershner",
+        "writer": "George Lucas",
+        "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+    }
+]
+```
 
 You can find the complete example under [this folder](.).
 
