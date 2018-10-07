@@ -1,4 +1,4 @@
-# Day 6: Spring boot 2, Spring Data and ElastocSearch programming 
+# Day 6: Spring boot 2, Spring Data and ElasticSearch programming 
 
 Today I'm going to use ElasticSearch in spring-boot application
 
