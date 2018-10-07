@@ -5,4 +5,4 @@ server:
 spring:
   data:
     elasticsearch:
-      cluster-nodes: localhost:9200
+      cluster-nodes: localhost:9300

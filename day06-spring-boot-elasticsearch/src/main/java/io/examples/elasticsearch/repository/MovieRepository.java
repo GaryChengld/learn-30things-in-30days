@@ -15,7 +15,7 @@ public interface MovieRepository extends ElasticsearchRepository<Movie, String> 
      * @param title
      * @return
      */
-    List<Movie> searchByTitle(String title);
+    List<Movie> findByTitle(String title);
 
     /**
      * Search movie by description
@@ -23,5 +23,6 @@ public interface MovieRepository extends ElasticsearchRepository<Movie, String> 
      * @param description
      * @return
      */
-    List<Movie> searchByDescription(String description);
+
+    List<Movie> findByDescription(String description);
 }

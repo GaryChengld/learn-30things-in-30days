@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
 
 /**
  * @author Gary Cheng
@@ -16,9 +17,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Movie {
     @Id
     private String id;
+    @Field
     private String title;
+    @Field
     private Integer year;
+    @Field
     private String director;
+    @Field
     private String writer;
+    @Field
     private String description;
 }
