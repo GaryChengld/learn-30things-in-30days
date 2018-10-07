@@ -16,7 +16,7 @@ Open [Spring Initializr](https://start.spring.io/) page and setup project struct
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/46385792-e46e7c80-c68b-11e8-9480-f2513922b426.PNG"/>
 
-Client create project button and download project zip file, extract it to local directory and open the project in Intellij or Eclipse
+Click create project button and download project zip file, extract it to local directory and open the project in Intellij or Eclipse
 
 This sample application will create a RESTful service implements resource as below and store data in MongoDB
 
