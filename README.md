@@ -11,4 +11,5 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 3 (2018-10-03) - Redis: An open-source in-memory key-value database](day03-redis/README.md)
  - [Day 4 (2018-10-04) - Redis message publish/subscribe programming on Vert.x](day04-redis-pubsub-vertx/README.md)
  - [Day 5 (2018-10-05) - ElasticSearch: A Lucene based REST search engine](day05-elasticsearch/README.md)
+ - [Day 6 (2018-10-06) - Spring-boot meet ElasticSearch](day06-spring-boot-elasticsearch/README.md)
 
