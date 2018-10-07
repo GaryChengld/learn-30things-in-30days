@@ -226,3 +226,5 @@ And below are the search results in browser
 --
 <img width="880" src="https://user-images.githubusercontent.com/3359299/46578418-9def8980-c9cd-11e8-873b-4041e2a057d2.PNG" />
 
+You can find the complete example under [this folder](.).
+
