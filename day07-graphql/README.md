@@ -10,11 +10,14 @@ It's created by Facebook with the purpose of building client applications based 
 
 ### Why GraphQL
 
-One of the primary challenges with traditional REST calls is the inability of the client to request a customized (limited or expanded) set of data. In most cases, once the client requests information from the server, it either gets all or none of the fields.
+- Fetch only the needed fields
+- Pass arguments to fields
+- Data virtualization for multiple data sources
 
-Another difficulty is working and maintain multiple endpoints. As a platform grows, consequently the number will increase. Therefore, clients often need to ask for data from different endpoints.
+### Defining the schema
 
-When building a GraphQL server, it is only necessary to have one URL for all data fetching and mutating. Thus, a client can request a set of data by sending a query string, describing what they want, to a server.
+- programmatically - where type definitions are assembled manually in code
+- Schema Definition Language (SDL) **_Recommended_** - where the schema is generated from a textual language-independent description. 
 
 ### Basic terminology
 
@@ -27,4 +30,76 @@ When building a GraphQL server, it is only necessary to have one URL for all dat
  - Interface: An Interface will store the names of the fields and their arguments, so GraphQL objects can inherit from it, assuring the use of specific fields.
  - Schema: In GraphQL, the Schema manages queries and mutations, defining what is allowed to be executed in the GraphQL server.
  
+ 
+Now I will convert yesterday's example to GraphQL instead Restful services (still keep insert/update/delete)
+
+Open [Spring Initializr](https://start.spring.io/) page and setup project structure as below
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46589851-6ab80380-ca7c-11e8-8a66-7a0791c01db3.PNG" />
+
+Click "Create Project" button and download project zip file, extract it to local directory and open the project in Intellij or Eclipse.
+
+Add GraphQL related dependencies to maven pom file
+```xml
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>graphql-spring-boot-starter</artifactId>
+    <version>3.6.0</version>
+</dependency>
+<dependency>
+    <groupId>com.graphql-java</groupId>
+    <artifactId>graphql-java-tools</artifactId>
+    <version>3.2.0</version>
+</dependency>
+```
+
+#### Schema
+
+Create schema file movie.graphql
+```
+schema {
+  query: Query
+}
+
+type Query {
+  all: [Movie]
+  byId(id: String): Movie
+  byTitle(title: String): [Movie]
+}
+
+type Movie {
+  id: ID!
+  title: String
+  year: Int
+  director: String
+  writer: String
+  stars: String
+  description: String
+}
+```
+
+#### GraphQLService
+
+Create GraphQLService spring bean, and load schema after bean created
+
+```java
+@Service
+public class GraphQLService {
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Value("classpath:/graphql/movie.graphql")
+    private Resource resource;
+
+    private GraphQL graphQL;
+
+    @PostConstruct
+    private void loadSchema() throws IOException {
+        File schemaFile = resource.getFile();
+        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(schemaFile);
+        RuntimeWiring wiring = buildRuntimeWiring();
+        GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
+        this.graphQL = GraphQL.newGraphQL(schema).build();
+    }
+```
  
