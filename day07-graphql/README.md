@@ -102,4 +102,18 @@ public class GraphQLService {
         this.graphQL = GraphQL.newGraphQL(schema).build();
     }
 ```
+
+Then in same class, define RuntimeWiring to map queries in schema to java code
+
+```java
+    private RuntimeWiring buildRuntimeWiring() {
+        return RuntimeWiring.newRuntimeWiring()
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("all", findAllDataFetcher)
+                        .dataFetcher("byId", findByIdDataFetcher)
+                        .dataFetcher("byTitle", findByTitleDataFetcher))
+                .build();
+    }
+```
+
  

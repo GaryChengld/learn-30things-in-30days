@@ -37,4 +37,19 @@ public class GraphQLService {
         GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(typeRegistry, wiring);
         this.graphQL = GraphQL.newGraphQL(schema).build();
     }
+
+    private RuntimeWiring buildRuntimeWiring() {
+        return RuntimeWiring.newRuntimeWiring()
+                .type("Query", typeWiring -> typeWiring
+                        .dataFetcher("all", findAllDataFetcher)
+                        .dataFetcher("byId", findByIdDataFetcher)
+                        .dataFetcher("byTitle", findByTitleDataFetcher)
+                )
+                .build();
+    }
+
+
+    public GraphQL getGraphQL() {
+        return graphQL;
+    }
 }
