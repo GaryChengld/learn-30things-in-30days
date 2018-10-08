@@ -6,7 +6,6 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
-import io.examples.graphql.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -21,11 +20,14 @@ import java.io.IOException;
  */
 @Service
 public class GraphQLService {
-    @Autowired
-    private MovieRepository movieRepository;
-
     @Value("classpath:/graphql/movie.graphql")
     private Resource resource;
+    @Autowired
+    private FindAllDataFetcher findAllDataFetcher;
+    @Autowired
+    private FindByIdDataFetcher findByIdDataFetcher;
+    @Autowired
+    private FindByTitleDataFetcher findByTitleDataFetcher;
 
     private GraphQL graphQL;
 
@@ -47,7 +49,6 @@ public class GraphQLService {
                 )
                 .build();
     }
-
 
     public GraphQL getGraphQL() {
         return graphQL;

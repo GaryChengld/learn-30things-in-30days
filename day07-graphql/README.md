@@ -116,4 +116,74 @@ Then in same class, define RuntimeWiring to map queries in schema to java code
     }
 ```
 
+#### DataFetchers
+
+Implement DataFetchers which retrieve data from data source
+
+**FindAllDataFetcher.java**
+
+```java
+@Component
+public class FindAllDataFetcher implements DataFetcher<List<Movie>> {
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Override
+    public List<Movie> get(DataFetchingEnvironment dataFetchingEnvironment) {
+        List<Movie> movies = new ArrayList<>();
+        movieRepository.findAll().forEach(movies::add);
+        return movies;
+    }
+}
+```
+
+**FindByIdDataFetcher.java**
+
+```java
+@Component
+public class FindByIdDataFetcher implements DataFetcher<Movie> {
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Override
+    public Movie get(DataFetchingEnvironment dataFetchingEnvironment) {
+        String id = dataFetchingEnvironment.getArgument("id");
+        return movieRepository.findById(id).get();
+    }
+}
+```
+
+**FindByTitleDataFetcher.java**
+```java
+@Component
+public class FindByTitleDataFetcher implements DataFetcher<List<Movie>> {
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Override
+    public List<Movie> get(DataFetchingEnvironment dataFetchingEnvironment) {
+        String title = dataFetchingEnvironment.getArgument("title");
+        return movieRepository.findByTitle(title);
+    }
+}
+```
+
+#### Controller
+
+```java
+@RestController
+@RequestMapping(value = "/v1/movies")
+public class MovieController {
+    @Autowired
+    private GraphQLService graphQLService;
+
+    @PostMapping
+    public ResponseEntity<Object> query(@RequestBody String query) {
+        ExecutionResult execute = graphQLService.getGraphQL().execute(query);
+        return new ResponseEntity<>(execute, HttpStatus.OK);
+    }
+}
+```
+
+You can find the complete source code under [this folder](.).
  
