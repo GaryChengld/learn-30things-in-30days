@@ -262,7 +262,7 @@ Http request body
 
 Response
 
-``Json
+```json
 {
     "errors": [],
     "data": {
