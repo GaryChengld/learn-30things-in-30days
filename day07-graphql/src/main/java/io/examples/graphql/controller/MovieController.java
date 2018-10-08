@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
  * @author Gary Cheng
@@ -20,8 +21,10 @@ public class MovieController {
     private GraphQLService graphQLService;
 
     @PostMapping
-    public ResponseEntity<Object> query(@RequestBody String query) {
-        ExecutionResult execute = graphQLService.getGraphQL().execute(query);
-        return new ResponseEntity<>(execute, HttpStatus.OK);
+    public Mono<ResponseEntity<Object>> query(@RequestBody String query) {
+        return Mono.create(emitter -> {
+            ExecutionResult executeResult = graphQLService.getGraphQL().execute(query);
+            emitter.success(new ResponseEntity<>(executeResult, HttpStatus.OK));
+        });
     }
 }

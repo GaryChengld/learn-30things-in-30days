@@ -168,7 +168,9 @@ public class FindByTitleDataFetcher implements DataFetcher<List<Movie>> {
 }
 ```
 
-#### Controller
+#### Change Rest Controller class
+
+**MovieController.java**
 
 ```java
 @RestController
@@ -178,12 +180,110 @@ public class MovieController {
     private GraphQLService graphQLService;
 
     @PostMapping
-    public ResponseEntity<Object> query(@RequestBody String query) {
-        ExecutionResult execute = graphQLService.getGraphQL().execute(query);
-        return new ResponseEntity<>(execute, HttpStatus.OK);
+    public Mono<ResponseEntity<Object>> query(@RequestBody String query) {
+            return Mono.create(emitter -> {
+                ExecutionResult executeResult = graphQLService.getGraphQL().execute(query);
+                emitter.success(new ResponseEntity<>(executeResult, HttpStatus.OK));
+            }); 
     }
 }
 ```
 
-You can find the complete source code under [this folder](.).
+#### Build application
+
+```
+mvn clean install
+```
+
+#### Start GraphQL server
+
+```
+mvn spring-boot:run
+```
+
+#### Results 
+
+I still use postman to test REST requests. All GraphQL request are sent in **POST** method and text type as body.
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46612119-a59e5380-cadd-11e8-970b-93b89e819f84.PNG" />
+
+All GraphQL queies are share same endpoint at http://localhost:9080/v1/movies
+
+**Find all movies**
+
+List id and title only
+
+Http Request Body
+
+```
+{
+  all {
+    id
+    title
+  }
+}
+```
+
+Response
+
+```json
+{
+    "errors": [],
+    "data": {
+        "all": [
+            {
+                "id": "tt0086190",
+                "title": "Star Wars: Episode VI - Return of the Jedi"
+            },
+            {
+                "id": "tt0080684",
+                "title": "Star Wars: Episode V - The Empire Strikes Back"
+            }
+        ]
+    },
+    "extensions": null
+}
+```
+
+Now I want show more movie data to include stats and description
+
+Http request body
+
+```
+{
+  all {
+    id
+    title
+    stars
+    description
+  }
+}
+```
+
+Response
+
+``Json
+{
+    "errors": [],
+    "data": {
+        "all": [
+            {
+                "id": "tt0086190",
+                "title": "Star Wars: Episode VI - Return of the Jedi",
+                "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+            },
+            {
+                "id": "tt0080684",
+                "title": "Star Wars: Episode V - The Empire Strikes Back",
+                "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+                "description": "After the rebels are brutally overpowered by the Empire on the ice planet Hoth, Luke Skywalker begins Jedi training with Yoda, while his friends are pursued by Darth Vader."
+            }
+        ]
+    },
+    "extensions": null
+}
+```
+
+That's all for today, you can find the complete source code under [this folder](.).
  
