@@ -245,7 +245,7 @@ Response
 }
 ```
 
-Now I want show more movie data to include stats and description
+Now I want show more movie data to include stars and description
 
 Http request body
 
@@ -283,6 +283,73 @@ Response
     },
     "extensions": null
 }
+```
+
+**Find movie by id**
+
+Http request Body
+
+```
+{
+  byId(id: "tt0086190") {
+    id
+    title
+    stars
+    description
+  }
+}
+```
+
+Response
+
+```json
+{
+    "errors": [],
+    "data": {
+        "byId": {
+            "id": "tt0086190",
+            "title": "Star Wars: Episode VI - Return of the Jedi",
+            "stars": "Mark Hamill, Harrison Ford, Carrie Fisher",
+            "description": "After a daring mission to rescue Han Solo from Jabba the Hutt, the rebels dispatch to Endor to destroy a more powerful Death Star. Meanwhile, Luke struggles to help Vader back from the dark side without falling into the Emperor's trap."
+        }
+    },
+    "extensions": null
+}
+```
+
+**Find movie by title**
+
+Http request body
+
+```
+{
+  byTitle(title: "Star Wars") {
+    id
+    title
+  }
+}
+```
+
+Response
+
+```json
+{
+    "errors": [],
+    "data": {
+        "byTitle": [
+            {
+                "id": "tt0086190",
+                "title": "Star Wars: Episode VI - Return of the Jedi"
+            },
+            {
+                "id": "tt0080684",
+                "title": "Star Wars: Episode V - The Empire Strikes Back"
+            }
+        ]
+    },
+    "extensions": null
+}
+
 ```
 
 That's all for today, you can find the complete source code under [this folder](.).
