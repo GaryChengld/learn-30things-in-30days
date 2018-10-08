@@ -23,7 +23,7 @@ The "war" maybe coming to a close and Docker is by and far the leader.
 **Using kubernetes Orchestrating containers**
 - Containers have helped simplify & standardize how software is modularized & deployed
 - Container orchestration has arisen to help equally simplify & standardize how these containers come together to make a usable software system.
-- Kubernetes as a container orchestration stadard
+- Kubernetes as a container orchestration standard
 
 
 
