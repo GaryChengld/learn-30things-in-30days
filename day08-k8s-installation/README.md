@@ -25,6 +25,28 @@ The "war" maybe coming to a close and Docker is by and far the leader.
 - Container orchestration has arisen to help equally simplify & standardize how these containers come together to make a usable software system.
 - Kubernetes as a container orchestration standard
 
+### Kubernetes
+
+- Born from a Google internal project in mid-2014(Google "Borg")
+- 1.0 Release in july 2015
+- Google partnered with Linux Foundation to form the Cloud Native Computing Foundation(CNCF) to offer Kubernetes as an open standard.
+- Frequently abbreviated "k8s"
+
+### Advantages of kubernetes
+
+- Based on extensive experience from Google, over a long period of time.
+- Large open source community & project, mature governing organization(CNCF)
+- Auto-scaling, cloud-agnostic-yet-integratable technologies
+
+### Where does K8S live
+
+- Evaluation/Training - minikube (local version of k8s)
+- Development - minikube, dev cluster on a cloud provider
+- Deployment - cloud provider or bare metal
+
+### Minikube setup
+
+
 
 
 
