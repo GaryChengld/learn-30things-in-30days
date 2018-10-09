@@ -160,6 +160,30 @@ C:\>
 
 Now minikube running correctly.
 
+#### List nodes
+
+```
+C:\> kubectl get nodes
+NAME       STATUS   ROLES    AGE   VERSION
+minikube   Ready    master   2h    v1.10.0
+
+C:\>
+```
+
+#### To view minikube dashboard, execute command **minikube  dashboard**
+
+Minikube dashboard shows in the browser
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46646478-63662800-cb58-11e8-92c8-8983eeb4c55f.PNG" />
+
+Click Node link
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46646481-66f9af00-cb58-11e8-981e-1fe82c9a6997.PNG" />
+
+For more detail on this, please check out this [Youtube video](https://www.youtube.com/watch?time_continue=24&v=ppgrKs1FNJE)
+
+
+
 
 
 
