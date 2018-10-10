@@ -112,7 +112,7 @@ E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>
 
 #### Deploy the docker image on Minikube
 
-Create deployment.yaml
+**Create deployment.yaml**
 
 ```yaml
 apiVersion: v1
@@ -144,9 +144,90 @@ spec:
     spec:
       containers:
       - name: petstore
-        image: garycheng/petstore:latest
+        image: garycheng/petstore:1.0
         ports:
         - containerPort: 9080
 ```        
+
+**Start Minikube**
+
+```
+C:\>minikube start
+Starting local Kubernetes v1.10.0 cluster...
+Starting VM...
+Getting VM IP address...
+Moving files into cluster...
+Setting up certs...
+Connecting to cluster...
+Setting up kubeconfig...
+Starting cluster components...
+Kubectl is now configured to use the cluster.
+Loading cached images from config file.
+
+C:\>
+```
+
+**Deployment petstore**
+
+```
+E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>kubectl apply -f deployment.yaml
+service/petstore created
+replicationcontroller/petstore created
+
+```
+
+**View all Services within Minikube by using the “kubectl get svc” command.**
+
+```
+E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          1d
+petstore     NodePort    10.107.199.113   <none>        9080:31522/TCP   3m
+
+```
+
+**View all containers in Minikube**
+
+```
+E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>kubectl get pods
+NAME             READY   STATUS             RESTARTS   AGE
+petstore-597gj   0/1     ImagePullBackOff   0          4m
+```
+
+**Display service detail**
+```
+E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>kubectl describe services petstore
+Name:                     petstore
+Namespace:                default
+Labels:                   app=petstore
+Annotations:              kubectl.kubernetes.io/last-applied-configuration:
+                            {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"petstore"},"name":"petstore","namespace":"default"},"spe...
+Selector:                 app=petstore
+Type:                     NodePort
+IP:                       10.107.199.113
+Port:                     http  9080/TCP
+TargetPort:               9080/TCP
+NodePort:                 http  31522/TCP
+Endpoints:
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+```
+
+**Start service**
+
+```
+E:\Workspaces\learn-30things-in-30days\day09-k8s-deployment>minikube service petstore
+Opening kubernetes service default/petstore in default browser...
+```
+
+Then open URL http://192.168.99.101:31522/v1/pet in browser
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46715291-5a935600-cc2d-11e8-95a2-525ce7a0520b.PNG" />
+
+Now the MicroService is deployed to Minikube successfully.
+
+
+
 
 
