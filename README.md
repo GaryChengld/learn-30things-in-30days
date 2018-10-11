@@ -15,4 +15,5 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 7 (2018-10-07) - GraphQL: an open source data query and manipulation language](day07-graphql/README.md)
  - [Day 8 (2018-10-08) - Kubernetes overview and install Minikube on windows](day08-k8s-installation/README.md)
  - [Day 9 (2018-10-09) - Deploy a java based MicroService to Minikube](day09-k8s-deployment/README.md)
+ - [Day 10 (2018-10-10) - Kubernetes architecture and basic kubectl](day10-k8s-kubectl/README.md)
 
