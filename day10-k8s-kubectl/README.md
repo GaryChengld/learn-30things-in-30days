@@ -1,6 +1,6 @@
 # Day 10: Kubernetes architecture and basic kubectl
 
-Today I continue learn kubernetes deployment
+Today I continue learn kubernetes
 
 ## Kubernetes architecture
 
