@@ -132,7 +132,7 @@ spec:
 
 ---
 apiVersion: v1
-kind: Deployment
+kind: ReplicationController
 metadata:
   name: petstore
 spec:
