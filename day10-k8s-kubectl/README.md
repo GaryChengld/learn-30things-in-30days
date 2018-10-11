@@ -168,6 +168,102 @@ Full kubectl reference & cheat sheet
 - Reference: https://kubernetes.io/docs/reference/kubectl/kubectl/
 - Cheat sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
 
+## Scaling Application
+
+**Replicas**
+
+Kubernetes allows you to define replicas when you deploy an application - you have a few options
+
+- Setting "replica" in deployment (recommended)
+- Defining a ReplicaSet
+- Bare Pods
+- Job
+- DaemonSet
+
+Scaling example
+
+>deployment.yaml
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: petstore
+  labels:
+    app: petstore
+spec:
+  type: NodePort
+  selector:
+    app: petstore
+  ports:
+  - protocol: TCP
+    port: 9080
+    name: http
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: petstore
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: petstore
+    spec:
+      containers:
+      - name: petstore
+        image: garycheng/petstore:1.0
+        ports:
+        - containerPort: 9080
+```
+
+**Scaling command**
+
+```
+C:\>kubectl scale --replicas=4 ReplicationController/petstore
+replicationcontroller/petstore scaled
+
+C:\>kubectl get pods
+NAME                     READY   STATUS             RESTARTS   AGE
+petstore-6hckv           1/1     Running            0          40s
+petstore-9nczg           1/1     Running            0          40s
+petstore-hjxsz           1/1     Running            0          40s
+petstore-sv7qn           1/1     Running            2          22h
+```
+
+**Updating the service**
+
+- Previously defined a "NodePort" service for petstore
+- Now let's defind a Load Balancer service
+
+```
+C:\>kubectl expose ReplicationController petstore --type=LoadBalancer --port=9080 --target-port=9080 --name petstore-load-balancer
+service/petstore-load-balancer exposed
+```
+
+- Finally, let's see what IP address was assigned for the service
+
+```
+C:\>kubectl describe services petstore-load-balancer
+Name:                     petstore-load-balancer
+Namespace:                default
+Labels:                   app=petstore
+Annotations:              <none>
+Selector:                 app=petstore
+Type:                     LoadBalancer
+IP:                       10.97.47.73
+Port:                     <unset>  9080/TCP
+TargetPort:               9080/TCP
+NodePort:                 <unset>  32134/TCP
+Endpoints:                172.17.0.5:9080,172.17.0.7:9080,172.17.0.8:9080 + 1 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+```
+
+
 
 
 
