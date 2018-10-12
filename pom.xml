@@ -10,6 +10,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>day09-k8s-deployment</module>    
+    <module>day09-k8s-deployment</module>
+    <module>day11-mqtt-vertx</module>
   </modules>
 </project>
