@@ -12,5 +12,6 @@
   <modules>
     <module>day09-k8s-deployment</module>
     <module>day11-mqtt-vertx</module>
+    <module>day12-grpc</module>
   </modules>
 </project>
