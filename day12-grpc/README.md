@@ -6,9 +6,14 @@ Today I'm going to learn a hot new buzz in technology call gRPC.
 
 gRPC is a RPC platform developed by Google which was announced and made open source  in late Feb 2015.  The letters “gRPC” are a recursive acronym which means, gRPC Remote Procedure Call.
 
-gRPC has two parts, the gRPC protocol, and the data serialization. By default gRPC utilizes Protocol Buffers for serialization.
+gRPC has wo parts, the gRPC protocol, and the data serialization. By default gRPC utilizes protobuf for serialization.
 
-## Protocol Buffers
+- HTTP/2
+- protobuf serializaiton
+- Client open one long-live connection to gRPC server
+- Allows client-side and serve side streaming
+
+## Protocol Buffers (protobuf)
 
 Protocol buffers are a flexible, efficient, automated mechanism for serializing structured data. You define how you want your data to be structured once, then you can use special generated source code to easily write and read your structured data to and from a variety of data streams and using a variety of languages.
 
@@ -31,3 +36,26 @@ message HelloReply {
   string message = 1;
 }
 ``` 
+
+## gRPC vs REST
+
+|gRPC|REST|
+|:---|:---|
+|protobuf|Json|
+|HTTP/2|HTTP 1.1|
+|Messages|HTTP Verb|
+|Streaming|Request-Response|
+|Strong Typing|Serialization|
+
+## Language supported
+
+- C++
+- Java
+- Python
+- GO
+- Ruby
+- C#
+- Node.js (JavaScript)
+- Object C
+- PHP
+
