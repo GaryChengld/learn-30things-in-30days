@@ -121,7 +121,7 @@ You can use the following command to generate the code:
 
 >protoc -I=$SRC_DIR --java_out=$DST_DIR $SRC_DIR/greeting.proto
 
-2. For java development, can use maven plugin to generate cod during build
+2. For java development, can use maven plugin to generate code during build
 
 ```xml
 <plugins>
@@ -147,20 +147,29 @@ You can use the following command to generate the code:
     </plugins>
 ```
 
+Build application by maven command
+> mvn clean install
+
+The maven plugin generated following classes in target directory
+
+<img width="400" src="https://user-images.githubusercontent.com/3359299/46906421-35267680-ced1-11e8-9591-a1c0e168c18c.PNG" />
+
 ### Server class
 
 ```java
 package io.examples.grpc.greeting;
 
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.grpc.VertxServer;
 import io.vertx.grpc.VertxServerBuilder;
 
 
 public class Server extends AbstractVerticle {
+    private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     public static void main(String[] args) {
         Vertx.vertx().deployVerticle(Server.class.getName());
@@ -168,23 +177,28 @@ public class Server extends AbstractVerticle {
 
     @Override
     public void start() {
-        VertxServer server = VertxServerBuilder.forAddress(vertx, "localhost", 8080)
-                .addService(new GreeterGrpc.GreeterVertxImplBase() {
-                    @Override
-                    public void sayHello(HelloRequest request, Future<HelloReply> future) {
-                        System.out.println("Hello " + request.getName());
-                        future.complete(HelloReply.newBuilder().setMessage(request.getName()).build());
-                    }
-                }).build();
+        VertxServer server = VertxServerBuilder.forAddress(vertx, "localhost", 9080)
+                .addService(this.greeterService()).build();
         server.start(ar -> {
             if (ar.succeeded()) {
-                System.out.println("gRPC service started");
+                logger.debug("gRPC service started");
             } else {
-                System.out.println("Could not start server " + ar.cause().getMessage());
+                logger.debug("Could not start server " + ar.cause().getMessage());
             }
         });
     }
+
+    private GreeterGrpc.GreeterVertxImplBase greeterService() {
+        return new GreeterGrpc.GreeterVertxImplBase() {
+            @Override
+            public void sayHello(HelloRequest request, Future<HelloReply> future) {
+                System.out.println("Hello " + request.getName());
+                future.complete(HelloReply.newBuilder().setMessage("Reply message to " + request.getName()).build());
+            }
+        };
+    }
 }
+
 ```
 
 ### Client class
@@ -231,21 +245,16 @@ public class Client extends AbstractVerticle {
 
 1. Run Server in IDE, it shows
 
-```
-gRPC service started
-```
+>gRPC service started
 
 2. Run Client in IDE, shows output
 
-```
-Succeeded Gary
-```
-
 and Server outputs
+>Hello Gary
 
-```
-Hello Gary
-```
+
+Then the client gets reply
+>Succeeded Reply to Gary
 
 That's all for today, you can find the complete source code under [this folder](.).
 
