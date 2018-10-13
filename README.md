@@ -18,4 +18,5 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 10 (2018-10-10) - Kubernetes architecture and basic kubectl](day10-k8s-kubectl/README.md)
  - [Day 11 (2018-10-11) - MQTT: a machine-to-machine connectivity protocol](day11-mqtt-vertx/README.md)
  - [Day 12 (2018-10-12) - gRPC: A Modern Toolkit for Microservice Communication](day12-grpc/README.md)
+ - [Day 13 (2018-10-13) - Hazelcast: an open source in-memory data grid based on Java](day13-hazelcast/README.md)
 
