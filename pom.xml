@@ -13,5 +13,6 @@
     <module>day09-k8s-deployment</module>
     <module>day11-mqtt-vertx</module>
     <module>day12-grpc</module>
+    <module>day13-hazelcast</module>
   </modules>
 </project>

@@ -56,10 +56,12 @@ map.get("key-1");
 - Client / Server
 
 **Embedded Mode**
+
 <img width="600" src="https://user-images.githubusercontent.com/3359299/46912317-2b882780-cf40-11e8-8591-803c4e023754.PNG"/>
  
 
 **Client / Server mode**
+
 <img width="600" src="https://user-images.githubusercontent.com/3359299/46912319-30e57200-cf40-11e8-93c4-22a046efd542.PNG" />
 
 ## Try Hazelcast connections
@@ -207,7 +209,185 @@ hazelcast[default] >
 It got same results, this means the map are copied to all 3 hazelcast, and even some hazelcast is closed, the value is still in other instance.
 
 
+## Programming on Hazelcast
+
+Now let's start do some programming using Hazelcast, still use vert.x create a Microservice application.
+
+This is a demo RESTful application implements below methods
+
+|Method|Url|Description|
+|:---|:---|:---|
+|POST|/v1/hazelcast/{key}|Put a key to hazelcast|
+|GET|/v1/hazelcast/{key}|Get a key from hazelcast|
+
+**Init hazelcast map after http server started**
+
+```java
+    private Map myMap;
+
+    @Override
+    public void start(Future<Void> startFuture) {
+        logger.debug("start http server");
+        this.startHttpServer()
+                .doAfterSuccess(s -> logger.debug("http server started on port {}", s.actualPort()))
+                .subscribe(s -> {
+                    Set<HazelcastInstance> instances = Hazelcast.getAllHazelcastInstances();
+                    HazelcastInstance hz = instances.stream().findFirst().get();
+                    myMap = hz.getMap("myMap");
+                    logger.debug("map size:{}", myMap.size());
+                    startFuture.complete();
+                }, startFuture::fail);
+    }
+```
+
+**http server**
+```java
+    private Single<HttpServer> startHttpServer() {
+        Router router = Router.router(vertx);
+        router.put("/v1/hazelcast/:key").handler(this::putKey);
+        router.get("/v1/hazelcast/:key").handler(this::getKey);
+        return vertx.createHttpServer()
+                .requestHandler(router::accept)
+                .rxListen(this.config().getInteger(KEY_PORT));
+    }
+```
+
+**GET handler**
+```java
+    private void getKey(RoutingContext context) {
+        String key = context.request().getParam("key");
+        logger.debug("Received getKey request, key={}", key);
+        String value = (String) myMap.get(key);
+        logger.debug("get value:{}", value);
+        this.keyValueResponse(context, key, value);
+    }
+```
+
+**PUT handler**
+ ```java
+     private void putKey(RoutingContext context) {
+         String key = context.request().getParam("key");
+         context.request().bodyHandler(buffer -> {
+             logger.debug("Request body:{}", buffer.toJsonObject());
+             String value = buffer.toJsonObject().getString("value");
+             logger.debug("put value:{}", value);
+             myMap.put(key, value);
+             this.keyValueResponse(context, key, value);
+ 
+         });
+     }
+ ```
+ 
+ **Create a config file for instance 1**
+ >config-1.json
+ 
+ ```json
+ {
+   "port": 9080
+ }
+ ```
+ 
+**Create a config file for instance 2**
+>config-1.json
+  
+```json
+{
+  "port": 9081
+}
+```
+
+**Build**
+>mvn clean install
+
+**Execute application**
+
+open a command prompt, run command
+>java -jar target\hazelcast-0.0.1-SNAPSHOT-fat.jar --cluster --conf config-1.json
+
+It displays
+```
+Members [1] {
+        Member [192.168.99.1]:5701 - 5fe737b9-feca-4969-a71d-d126af65b8ed this
+}
+
+Oct 14, 2018 9:10:03 AM com.hazelcast.core.LifecycleService
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] [192.168.99.1]:5701 is STARTED
+Oct 14, 2018 9:10:03 AM com.hazelcast.internal.partition.impl.PartitionStateManager
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] Initializing cluster partition table arrangement...
+09:10:03.886 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - start http server
+09:10:03.960 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - map size:0
+09:10:03.962 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - http server started on port 9080
+Oct 14, 2018 9:10:03 AM io.vertx.core.impl.launcher.commands.VertxIsolatedDeployer
+INFO: Succeeded in deploying verticle
+```
+
+There is 1 hazelcast instance created and http server is started on port 9080
 
 
+open another command prompt, run command
+>java -jar target\hazelcast-0.0.1-SNAPSHOT-fat.jar --cluster --conf config-2.json
+
+It displays
+
+```
+Members [2] {
+        Member [192.168.99.1]:5701 - 5fe737b9-feca-4969-a71d-d126af65b8ed
+        Member [192.168.99.1]:5702 - 8e8b64fd-d6b9-4825-be64-d41cf0882f21 this
+}
+
+Oct 14, 2018 9:12:16 AM com.hazelcast.core.LifecycleService
+INFO: [192.168.99.1]:5702 [dev] [3.8.2] [192.168.99.1]:5702 is STARTED
+09:12:17.469 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - start http server
+09:12:17.526 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - map size:0
+09:12:17.528 [vert.x-eventloop-thread-1] DEBUG io.examples.hazelcast.ServerVerticle - http server started on port 9081
+Oct 14, 2018 9:12:17 AM io.vertx.core.impl.launcher.commands.VertxIsolatedDeployer
+INFO: Succeeded in deploying verticle
+```
+
+The second http server is started on 9081
+
+In first command prompt also shows 2 hazelcast instance are connected
+
+```
+Oct 14, 2018 9:12:13 AM com.hazelcast.nio.tcp.SocketAcceptorThread
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] Accepting socket connection from /192.168.99.1:57350
+Oct 14, 2018 9:12:13 AM com.hazelcast.nio.tcp.TcpIpConnectionManager
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] Established socket connection between /192.168.99.1:5701 and /192.168.99.1:57350
+Oct 14, 2018 9:12:14 AM com.hazelcast.internal.cluster.ClusterService
+INFO: [192.168.99.1]:5701 [dev] [3.8.2]
+
+Members [2] {
+        Member [192.168.99.1]:5701 - 5fe737b9-feca-4969-a71d-d126af65b8ed this
+        Member [192.168.99.1]:5702 - 8e8b64fd-d6b9-4825-be64-d41cf0882f21
+}
+
+Oct 14, 2018 9:12:14 AM com.hazelcast.internal.partition.impl.MigrationManager
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] Re-partitioning cluster data... Migration queue size: 271
+Oct 14, 2018 9:12:16 AM com.hazelcast.internal.partition.impl.MigrationThread
+INFO: [192.168.99.1]:5701 [dev] [3.8.2] All migration tasks have been completed, queues are empty.
+```
+
+Now use postman to test the application
+
+- URL: http://localhost:9080/v1/hazelcast/mykey
+- Method: PUT
+- Body:
+>{"value": "value1"}
+
+The value is saved to hazelcast from first http server
+
+Then try to get the value from second http server 
+
+- URL: http://localhost:9081/v1/hazelcast/mykey
+- Method: GET
+
+Results:
+```json
+{
+    "mykey": "value1"
+}
+```
+
+That's all for today, you can find the complete source code under [this folder](.).
 
 
