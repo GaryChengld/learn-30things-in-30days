@@ -1,8 +1,10 @@
-#Day 14: Apache Kafka - an open-source stream-processing software platform
+# Day 14: Apache Kafka - an open-source stream-processing software platform
 
 Today, I'm starting my new journey, with this Apache Kafka.
 
-## What is Kafka?
+## Introduction
+
+### What is Kafka?
 
 Kafka is a high-performance, real-time messaging system, It is an open source tool and it a part of Apache projects, it has following characteristics:
 
@@ -11,14 +13,14 @@ Kafka is a high-performance, real-time messaging system, It is an open source to
 - It is highly scalable.
 - It can process and send millions of messages per second to several receivers.
 
-## Kafka history
+### Kafka history
 
 - It was originally developed by LinkedIn and handed over to the open source community in 2011
 - It became a main Apache project in 2012
 - A stable version 0.8.2.0 was release in Feb, 2015
 - The latest version 0.8.2.1 was released in May, 2015
 
-## Use cases
+### Use cases
 
 - Messaging service - Millions of messages can be sent and received in real-time.
 - Real-time stream processing - It can be used to process a continuous steam of information in real-tme and pass it to stream processing system such as Storm.
@@ -26,7 +28,7 @@ Kafka is a high-performance, real-time messaging system, It is an open source to
 - Commit log service - Kafka can be used as an external commit log for distributed systems.
 - Event sourcing - A time order sequence of events can by maintained through Kafka.
 
-## Kafka Data Model
+### Kafka Data Model
 
 The Kafka data model consists of messages and topics
 
@@ -36,7 +38,7 @@ The Kafka data model consists of messages and topics
 - The processes that receive the messages from a topic in Kafka are know as consumers.
 - The processes or servers within Kafka that process the messages are know as brokers.
 
-## Topics
+### Topics
 
 A topic is a category of messages in Kafka
 
@@ -50,7 +52,7 @@ A topic is a category of messages in Kafka
 
 <img width="600" src="https://user-images.githubusercontent.com/3359299/46923759-b32a7080-cfea-11e8-854a-c5318633f2fd.PNG" />
 
-## Partitions
+### Partitions
 
 Topics are divided into partitions, which are the unit of parallelism in Kafka.
 
@@ -59,7 +61,7 @@ Topics are divided into partitions, which are the unit of parallelism in Kafka.
 - Each partition should fit in a single Kafka server.
 - The number of partitions decide the parallelism of the topic.
 
-## Partition Distribution
+### Partition Distribution
 
 Partitions can be distributed across the Kafka cluster.
 
@@ -70,7 +72,7 @@ Partitions can be distributed across the Kafka cluster.
 - If a leader fails, one of the followers automatically become the leader.
 - Zookeeper is used for the leader selection.
 
-## Producers
+### Producers
 
 The producer is the creator of the message in Kafka.
 
@@ -81,7 +83,7 @@ The producer is the creator of the message in Kafka.
 
 <img width="600" src="https://user-images.githubusercontent.com/3359299/46924083-d22b0180-cfee-11e8-9800-562700009a7d.PNG" />
 
-## Consumers
+### Consumers
 
 The consumer is the receiver of the message in Kafka.
 
@@ -93,7 +95,7 @@ The consumer is the receiver of the message in Kafka.
 
 <img width="600" src="https://user-images.githubusercontent.com/3359299/46924260-030c3600-cff1-11e8-81a2-ae35de779ecc.PNG"/>
 
-## Kafka Architecture
+### Kafka Architecture
 
 Kafka architecture consists of brokers that take messages from the producers and add to a partition of a topic. Brokers provide the messages to the consumers from the partitions.
 
@@ -104,11 +106,65 @@ Kafka architecture consists of brokers that take messages from the producers and
 - Each message is delivered to one consumer in each consumer group.
 - Zookeeper is used for coordination.
 
-## Type of messaging systems
+### Type of messaging systems
 
 Kafka architecture supports the publish-subscribe and queue system.
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/46924552-fccb8900-cff3-11e8-9706-cf4807ffb0ac.PNG" />
 
+The implementation of queue system
 
- 
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46924635-b4609b00-cff4-11e8-91ce-b89f0b1a7bdf.PNG" />
+
+The implementation of publish-subscribe system
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46924637-b9bde580-cff4-11e8-967f-0b17b330772b.PNG" />
+
+### Brokers
+
+Brokers are the Kafka processes that process the messages in Kafka.
+
+- Each machine in the cluster can run one broker.
+- The broker coordinate among each other using Zookeeper.
+- One broker acts as a leader for a partition and handles the delivery and persistence, whereas, the others act as followers.
+- Brokers receive the message from the producer and send it to consumer groups.
+
+### Kafka Guarantees
+
+Kafka guarantees the following:
+
+1. Messages sent by a producer to a topic and a partition are appended in the same order.
+2. A consumer instance gets the messages in the same order as they are produced.
+3. A topic with replication factor N, tolerates up  to N-1 server failures.
+
+### Replication in Kafka
+
+- One machine (one replica) is called a leader and is chosen as the primary; the remaining machines (replicas) are chosen as the followers ad act as backups.
+- The leader propagates the writes to the followers.
+- The leader waits until the writes are completed on all the replicas.
+- If a replica is down, it is skipped for the write until it comes back.
+- If the leader fails, one of the followers will be chosen as the new leader; this mechanism can tolerate n-1 failures f replication factor is 'n'.
+
+### Persistence in Kafka
+
+Kafka uses the Linux file system for persistence of messages.
+
+- Persistence ensures no messages are lost.
+- Kafka relies on the file system page cache for fast reads and writes.
+- All the data is immediately written to a file in file system.
+- Messages are grouped as message sets for more efficient writes.
+- Message sets can be compressed to reduce network bandwidth.
+- A standardized binary message format is used among producers, brokers, and consumers to minimize data modification.
+
+
+
+
+
+
+
+
+
+
+
+
+
