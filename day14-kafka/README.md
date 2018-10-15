@@ -74,19 +74,41 @@ Partitions can be distributed across the Kafka cluster.
 
 The producer is the creator of the message in Kafka.
 
+- The producers place the message to a particular topic.
+- The producers also decide which partition to place the message into.
+- Topics should already exist before a message is placed by the producer.
+- Messages are added at one end of the partition.
 
+<img width="600" src="https://user-images.githubusercontent.com/3359299/46924083-d22b0180-cfee-11e8-9800-562700009a7d.PNG" />
 
+## Consumers
 
+The consumer is the receiver of the message in Kafka.
 
+- Each consumer belongs to a consumer group.
+- A consumer group may have one or more consumers.
+- The consumers specify what topic they want to listen to.
+- A message is send to all the consumers in a consumer group.
+- The consumer groups are used to control the messaging system.
 
+<img width="600" src="https://user-images.githubusercontent.com/3359299/46924260-030c3600-cff1-11e8-81a2-ae35de779ecc.PNG"/>
 
+## Kafka Architecture
 
+Kafka architecture consists of brokers that take messages from the producers and add to a partition of a topic. Brokers provide the messages to the consumers from the partitions.
 
+- A topic is divided into multiple partitions
+- The message are added to the partitions at one end and consumed in the same order.
+- Each partition acts as a message queue.
+- Consumers are divided into consumer groups.
+- Each message is delivered to one consumer in each consumer group.
+- Zookeeper is used for coordination.
 
+## Type of messaging systems
 
+Kafka architecture supports the publish-subscribe and queue system.
 
-
-
+<img width="880" src="https://user-images.githubusercontent.com/3359299/46924552-fccb8900-cff3-11e8-9706-cf4807ffb0ac.PNG" />
 
 
  
