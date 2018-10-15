@@ -18,7 +18,6 @@ Kafka is a high-performance, real-time messaging system, It is an open source to
 - It was originally developed by LinkedIn and handed over to the open source community in 2011
 - It became a main Apache project in 2012
 - A stable version 0.8.2.0 was release in Feb, 2015
-- The latest version 0.8.2.1 was released in May, 2015
 
 ### Use cases
 
@@ -155,6 +154,97 @@ Kafka uses the Linux file system for persistence of messages.
 - Messages are grouped as message sets for more efficient writes.
 - Message sets can be compressed to reduce network bandwidth.
 - A standardized binary message format is used among producers, brokers, and consumers to minimize data modification.
+
+## Install Apache Kafka in windows
+
+Prerequisite
+
+1. Install JDK or JRE in windows
+2. Install and Configure Apache Zookeeper
+
+### Download Apache Kafka
+
+Download Apache Kafka from [here](https://kafka.apache.org/downloads), the one I downloaded is Scala 2.11 binary package.
+
+Extract the package to local windows directory.
+
+### Config Apache Kafka
+
+1. Go to config folder in Apache Kafka and edit “server.properties”
+2. Find log.dirs and repelace after “=/tmp/kafka-logs” to “=C:\\Development\\kafka_2.11-2.0.0\\logs”
+3. Leave other setting as is. If your Apache Zookeeper on different server then change the “zookeeper.connect” property. 
+4. By default Apache Kafka will run on port 9092 and Apache Zookeeper will run on port 2181.
+
+### Running Apache Kafka
+
+**Start Apache Zookeeper**
+
+Open a command prompt, go to Zookeeper bin directory, execute command
+>zkServer.cmd
+
+Zookeeper will be started, and following output shows in the command prompt
+
+```
+2018-10-14 23:17:24,471 [myid:] - INFO  [main:Environment@100] - Server environment:java.io.tmpdir=C:\Users\Gary\AppData\Local\Temp\
+2018-10-14 23:17:24,476 [myid:] - INFO  [main:Environment@100] - Server environment:java.compiler=<NA>
+2018-10-14 23:17:24,481 [myid:] - INFO  [main:Environment@100] - Server environment:os.name=Windows 10
+2018-10-14 23:17:24,482 [myid:] - INFO  [main:Environment@100] - Server environment:os.arch=amd64
+2018-10-14 23:17:24,483 [myid:] - INFO  [main:Environment@100] - Server environment:os.version=10.0
+2018-10-14 23:17:24,486 [myid:] - INFO  [main:Environment@100] - Server environment:user.name=Gary
+2018-10-14 23:17:24,488 [myid:] - INFO  [main:Environment@100] - Server environment:user.home=C:\Users\Gary
+2018-10-14 23:17:24,491 [myid:] - INFO  [main:Environment@100] - Server environment:user.dir=C:\Development\zookeeper-3.4.12\bin
+2018-10-14 23:17:24,526 [myid:] - INFO  [main:ZooKeeperServer@835] - tickTime set to 2000
+2018-10-14 23:17:24,527 [myid:] - INFO  [main:ZooKeeperServer@844] - minSessionTimeout set to -1
+2018-10-14 23:17:24,528 [myid:] - INFO  [main:ZooKeeperServer@853] - maxSessionTimeout set to -1
+2018-10-14 23:17:24,766 [myid:] - INFO  [main:ServerCnxnFactory@117] - Using org.apache.zookeeper.server.NIOServerCnxnFactory as server connection factory
+2018-10-14 23:17:24,768 [myid:] - INFO  [main:NIOServerCnxnFactory@89] - binding to port 0.0.0.0/0.0.0.0:2181
+
+```
+
+**Start Apache Kafka**
+
+Open another command prompt, go to kafka directory, execute command
+>.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+Kafka will be started and shows follow outputs
+
+```
+[2018-10-14 23:23:45,349] INFO Loading logs. (kafka.log.LogManager)
+[2018-10-14 23:23:45,356] INFO Logs loading complete in 7 ms. (kafka.log.LogManager)
+[2018-10-14 23:23:45,365] INFO Starting log cleanup with a period of 300000 ms. (kafka.log.LogManager)
+[2018-10-14 23:23:45,367] INFO Starting log flusher with a default period of 9223372036854775807 ms. (kafka.log.LogManager)
+[2018-10-14 23:23:45,598] INFO Awaiting socket connections on 0.0.0.0:9092. (kafka.network.Acceptor)
+[2018-10-14 23:23:45,631] INFO [SocketServer brokerId=0] Started 1 acceptor threads (kafka.network.SocketServer)
+[2018-10-14 23:23:45,647] INFO [ExpirationReaper-0-Produce]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:45,648] INFO [ExpirationReaper-0-Fetch]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:45,650] INFO [ExpirationReaper-0-DeleteRecords]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:45,662] INFO [LogDirFailureHandler]: Starting (kafka.server.ReplicaManager$LogDirFailureHandler)
+[2018-10-14 23:23:50,208] INFO Creating /brokers/ids/0 (is it secure? false) (kafka.zk.KafkaZkClient)
+[2018-10-14 23:23:50,232] INFO Result of znode creation at /brokers/ids/0 is: OK (kafka.zk.KafkaZkClient)
+[2018-10-14 23:23:50,233] INFO Registered broker 0 at path /brokers/ids/0 with addresses: ArrayBuffer(EndPoint(Gary-PC,9092,ListenerName(PLAINTEXT),PLAINTEXT)) (kafka.zk.KafkaZkClient)
+[2018-10-14 23:23:50,274] INFO [ExpirationReaper-0-Rebalance]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:50,276] INFO [ExpirationReaper-0-Heartbeat]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:50,277] INFO [ExpirationReaper-0-topic]: Starting (kafka.server.DelayedOperationPurgatory$ExpiredOperationReaper)
+[2018-10-14 23:23:50,275] INFO Creating /controller (is it secure? false) (kafka.zk.KafkaZkClient)
+[2018-10-14 23:23:50,317] INFO Result of znode creation at /controller is: OK (kafka.zk.KafkaZkClient)
+[2018-10-14 23:23:50,322] INFO [GroupCoordinator 0]: Starting up. (kafka.coordinator.group.GroupCoordinator)
+[2018-10-14 23:23:50,323] INFO [GroupCoordinator 0]: Startup complete. (kafka.coordinator.group.GroupCoordinator)
+[2018-10-14 23:23:50,325] INFO [GroupMetadataManager brokerId=0] Removed 0 expired offsets in 2 milliseconds. (kafka.coordinator.group.GroupMetadataManager)
+[2018-10-14 23:23:50,392] INFO [ProducerId Manager 0]: Acquired new producerId block (brokerId:0,blockStartProducerId:1000,blockEndProducerId:1999) by writing to Zk with path version 2 (kafka.coordinator.transaction.ProducerIdManager)
+[2018-10-14 23:23:50,410] INFO [TransactionCoordinator id=0] Starting up. (kafka.coordinator.transaction.TransactionCoordinator)
+[2018-10-14 23:23:50,412] INFO [Transaction Marker Channel Manager 0]: Starting (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2018-10-14 23:23:50,412] INFO [TransactionCoordinator id=0] Startup complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2018-10-14 23:23:50,445] INFO [/config/changes-event-process-thread]: Starting (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2018-10-14 23:23:50,454] INFO [SocketServer brokerId=0] Started processors for 1 acceptors (kafka.network.SocketServer)
+[2018-10-14 23:23:50,458] INFO Kafka version : 2.0.0 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-10-14 23:23:50,458] INFO Kafka commitId : 3402a8361b734732 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-10-14 23:23:50,461] INFO [KafkaServer id=0] started (kafka.server.KafkaServer)
+
+```
+
+Now Kafka is started successfully on port 9092.
+
+
 
 
 
