@@ -1,0 +1,5 @@
+kafka:
+  server : localhost
+  port : 9092
+  topic : my-topic
+  consumerGroup : my-consumerGroup

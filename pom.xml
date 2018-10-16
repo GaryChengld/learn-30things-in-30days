@@ -14,5 +14,6 @@
     <module>day11-mqtt-vertx</module>
     <module>day12-grpc</module>
     <module>day13-hazelcast</module>
+    <module>day15-spring-camel-kafka</module>
   </modules>
 </project>
