@@ -1,4 +1,4 @@
-# Day 16: Secure Spring-boot application with Keycloak
+# Day 16: Keycload: an Identity and Access Management Server for Modern Applications and Services
 
 ## What is Keycloak
 
@@ -36,17 +36,30 @@ Keycloak is an open source software product to allow single sign-on with Identit
  
 ## Creating the client, the role, and the user
 
-Now we need to define a client, which will be our Spring Boot app. Go to the “Clients” section and click the “create” button. We will call our client “demo-client”: 
+Now I need to define a client, which will be our Spring Boot app. Go to the “Clients” section and click the “create” button. We will call our client “demo-client”: 
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47058891-0e986200-d195-11e8-87da-0fd3062b0eb9.PNG" />
 
 In next screen (Client setting screen), enter a valid redirect URL that Keycloak will use once the user is authenticated, Put as value: “http://localhost:9080/*”, then click save
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47059204-5ff52100-d196-11e8-9f7c-cf6f1e91c65e.PNG" />
- 
- 
- 
- 
 
+Now, I will define a role that will be assigned to users, let’s create a simple role called “user”, and click save button
+ 
+ <img width="880" src="https://user-images.githubusercontent.com/3359299/47059457-6f289e80-d197-11e8-8f03-de37d4b2ce5e.PNG" />
+ 
+And then let’s create an user, only the username property is needed, let’s call “testuser”, then save it.
+ 
+ <img width="880" src="https://user-images.githubusercontent.com/3359299/47059558-e100e800-d197-11e8-8589-d592956732f3.PNG" />
+ 
+And finally, we need to set his credentials, so go to the credentials tab of your user and choose a password, I will be using “password” for the rest of this article, make sure to turn off the “Temporary” flag unless you want the user to have to change his password the first time he authenticates.
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47059737-9f247180-d198-11e8-9e4a-1e450e0421d4.PNG" />
+
+Now proceed to the “Role Mappings” tab and assign the role “user”
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47059741-a21f6200-d198-11e8-9395-6bc34eab8e0e.PNG" />
+
+Now I'm done for now with the Keycloak server configuration and tomorrow I can start building a demo application which secured by Keycloak.
 
 
