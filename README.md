@@ -21,4 +21,5 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 13 (2018-10-13) - Hazelcast: an open source in-memory data grid based on Java](day13-hazelcast/README.md)
  - [Day 14 (2018-10-14) - Apache Kafka: an open-source stream-processing software platform](day14-kafka/README.md)
  - [Day 15 (2018-10-15) - Integrate Spring-boot with Apache Camel and Kafka](day15-spring-camel-kafka/README.md)
+ - [Day 16 (2018-10-16) - Secure Spring-boot application with Keycloak](day16-spring-keycloak/README.md)
 
