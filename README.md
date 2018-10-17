@@ -22,4 +22,4 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 14 (2018-10-14) - Apache Kafka: an open-source stream-processing software platform](day14-kafka/README.md)
  - [Day 15 (2018-10-15) - Integrate Spring-boot with Apache Camel and Kafka](day15-spring-camel-kafka/README.md)
  - [Day 16 (2018-10-16) - Keycload: an Identity and Access Management Server for Modern Applications and Services](day16-keycloak/README.md)
-
+ - [Day 17 (2018-10-17) - Secure Spring-Boot application with Keycloak](day17-spring-keycloak/README.md)
