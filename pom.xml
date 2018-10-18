@@ -15,5 +15,6 @@
     <module>day12-grpc</module>
     <module>day13-hazelcast</module>
     <module>day15-spring-camel-kafka</module>
+    <module>day17-spring-keycloak</module>
   </modules>
 </project>
