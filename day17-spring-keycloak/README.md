@@ -99,3 +99,13 @@ Enter "testuser" as username and "password" as password, since it's temporary pa
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47130251-c184c080-d266-11e8-875f-03982973eeec.PNG" /> 
 
+After reset password, it shows Star Wars Movies page
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47130590-54722a80-d268-11e8-9205-47cba35a30cf.PNG" />
+
+If click "Logout", it will go to first page.
+
+ That's all for today, you can find the complete source code under [this folder](.).
+
+
+
