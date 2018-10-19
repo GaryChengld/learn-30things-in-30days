@@ -1,0 +1,6 @@
+server:
+  port: 9080
+spring:
+  application:
+    name:
+      zipkin-service1

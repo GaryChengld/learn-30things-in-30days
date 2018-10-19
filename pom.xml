@@ -16,5 +16,6 @@
     <module>day13-hazelcast</module>
     <module>day15-spring-camel-kafka</module>
     <module>day17-spring-keycloak</module>
+    <module>day18-spring-zipkin</module>
   </modules>
 </project>
