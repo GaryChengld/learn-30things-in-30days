@@ -243,3 +243,76 @@ Restart application and go to http://localhost:9080/actuator/, it shows
 }
 ```
 
+## Securing Actuator Endpoints with Spring Security
+
+Actuator endpoints are sensitive and must be secured from unauthorized access. If Spring Security is present in your application, then the endpoints are secured by default using a form-based HTTP basic authentication.
+
+Add spring security to your application using the following dependency in pom.xml
+
+```xml
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+```
+
+Add java class AppSecurityConfig
+
+```java
+@Configuration
+public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.requestMatcher(EndpointRequest.toAnyEndpoint()).authorizeRequests()
+                .anyRequest().hasRole("ACTUATOR")
+                .and()
+                .httpBasic();
+    }
+
+    @Bean
+    @Override
+    public UserDetailsService userDetailsService() {
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("user")
+                        .password("password")
+                        .roles("ACTUATOR")
+                        .build();
+        return new InMemoryUserDetailsManager(user);
+    }
+}
+```
+
+## Customizing an Endpoint
+
+Spring also provides adding custom endpoints if you have any application specific feature that you want to exposure and monitor. 
+
+**Create java class CustomFeatureEndPoint**
+
+```java
+@Component
+@Endpoint(id = "myfeatures")
+public class CustomFeatureEndPoint {
+    private Map<String, Object> features = new ConcurrentHashMap<>();
+
+    @ReadOperation
+    public Map<String, Object> features() {
+        features.put("customFeature", "Hello World!");
+        return features;
+    }
+}
+```
+
+Restart application and go to url http://localhost:9080/actuator/myfeatures, the browser shows
+
+```json
+{
+  "customFeature":"Hello World!"
+}
+```
+
+ That's all for today, you can find the complete source code under [this folder](.).
+
+
+
