@@ -10,12 +10,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>day09-k8s-deployment</module>
-    <module>day11-mqtt-vertx</module>
-    <module>day12-grpc</module>
-    <module>day13-hazelcast</module>
-    <module>day15-spring-camel-kafka</module>
     <module>day17-spring-keycloak</module>
     <module>day18-spring-zipkin</module>
+    <module>day19-spring-actuator</module>
   </modules>
 </project>
