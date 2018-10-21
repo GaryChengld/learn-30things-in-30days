@@ -29,8 +29,158 @@ It consists of the follow steps:
 5. The CreateTripSaga receives the reply
 6. It send either an ApproveTrip or a RejectTrip command to the TripService
 
- - Flight Service - implements the REST endpoints for managing flights. The service persists in memory. Using the Eventuate Tram Saga framework, it processes command messages, updates its the Flight entity, and sends back a reply message.
- - Trip Service - implements a REST endpoint for managing trips. The service persists in memory and the CreateTripSaga in memory also. Using the Eventuate Tram Saga framework, it sends command messages and processes replies.
+ - Flight Service - implements the REST endpoints for managing flights. The service persists in H2 database. Using the Eventuate Tram Saga framework, it processes command messages, updates its the Flight entity, and sends back a reply message.
+ - Trip Service - implements a REST endpoint for managing trips. The service persists in H2 database and the CreateTripSaga in H2 database also. Using the Eventuate Tram Saga framework, it sends command messages and processes replies.
  
- 
+## TripService
+
+### Create Spring-boot TripService project 
+
+Open [Spring Initializr](https://start.spring.io/) page and setup project structure as below
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47271789-a4900c00-d54a-11e8-9fa0-230810707fc9.PNG" />
+
+Click "Create Project" button and download project zip file, extract it to local directory and open the project in Intellij or Eclipse.
+
+**Add following dependencies to maven pom.xml**
+
+```xml
+		<dependency>
+			<groupId>io.eventuate.tram.core</groupId>
+			<artifactId>eventuate-tram-jdbc-kafka</artifactId>
+			<version>${eventuatectram.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.eventuate.tram.sagas</groupId>
+			<artifactId>eventuate-jpa-sagas-framework</artifactId>
+			<version>${eventuate.tram.sagas.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.eventuate.tram.sagas</groupId>
+			<artifactId>eventuate-tram-sagas-simple-dsl</artifactId>
+			<version>${eventuate.tram.sagas.version}</version>
+		</dependency>
+```
+
+**Create application properties file**
+
+```yaml
+server:
+  port: 9080
+spring:
+  application:
+    name:
+      trip-service
+  jpa:
+    generate-ddl: true
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.hibernate.SQL: DEBUG
+    io.eventuate: DEBUG
+    io.examples: DEBUG
+```
+
+**Spring Application class**
+
+```java
+@SpringBootApplication
+@Configuration
+public class TripApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(TripApplication.class, args);
+    }
+
+    @Bean
+    public ChannelMapping channelMapping() {
+        return DefaultChannelMapping.builder().build();
+    }
+}
+```
+
+**BookingState enum**
+```java
+public enum BookingState {
+      PENDING, APPROVED, REJECTED
+  }
+```
+
+**Trip.java domain**
+
+```java
+@Entity
+@Table(name = "trips")
+@Access(AccessType.FIELD)
+public class Trip {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String customerName;
+    private String fromCity;
+    private String toCity;
+    private String tripDate;
+    private BookingState bookingState;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getFromCity() {
+        return fromCity;
+    }
+
+    public void setFromCity(String fromCity) {
+        this.fromCity = fromCity;
+    }
+
+    public String getToCity() {
+        return toCity;
+    }
+
+    public void setToCity(String toCity) {
+        this.toCity = toCity;
+    }
+
+    public String getTripDate() {
+        return tripDate;
+    }
+
+    public void setTripDate(String tripDate) {
+        this.tripDate = tripDate;
+    }
+
+    public BookingState getBookingState() {
+        return bookingState;
+    }
+
+    public void setBookingState(BookingState bookingState) {
+        this.bookingState = bookingState;
+    }
+}
+```
+
+**TripRepository.java**
+
+```java
+public interface TripRepository extends CrudRepository<Trip, Long> {
+}
+```
+
+
+
 

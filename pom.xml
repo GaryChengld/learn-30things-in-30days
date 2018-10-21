@@ -13,5 +13,6 @@
     <module>day17-spring-keycloak</module>
     <module>day18-spring-zipkin</module>
     <module>day19-spring-actuator</module>
+    <module>day21-eventuate-tram</module>
   </modules>
 </project>
