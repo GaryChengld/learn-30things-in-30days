@@ -107,6 +107,23 @@ But things rarely go as straight. Sometimes, we might not be in a position to pe
   
 **Saga must complete even if there are transient failures**  
 
+**Sagas are ACD**
+- Atomicity
+  - Saga implementation ensures that all transactions are
+  - executed OR all are compensated
+- Consistency
+  - Referential integrity within a service handled by local databases
+  - Referential integrity across services handled by application
+- Durability
+  - Durability handled by local databases
+
+## Summary
+
+- Microservices tackle complexity and accelerate development
+- Database per service is essential for loose coupling
+- Use sagas to maintain data consistency across services
+- Use transactional messaging to make sagas reliable
+
 ## Resources
 
 For more details, here are some YouTube videos
