@@ -50,6 +50,20 @@ Using our previous e-commerce example, in a very high-level design a saga implem
 
 <img width="800" src="https://blog.couchbase.com/wp-content/uploads/2018/01/Screen-Shot-2017-12-30-at-1.39.21-PM-768x471.png" />
 
+## The ways to implement a saga transaction
+
+- **Events/Choreography:** when there is no central coordination, each service produces and listen to other service’s events and decides if an action should be taken or not.
+
+<img width="800" src="https://microservices.io/i/data/Saga_Choreography_Flow.001.jpeg" />
+
+- **Command/Orchestration:** when a coordinator service is responsible for centralizing the saga’s decision making and sequencing business logic.
+
+<img width="800" src="https://microservices.io/i/data/Saga_Orchestration_Flow.001.jpeg" />
+
+## Rollbacks in distributed transactions
+
+
+
 ## Resources
 
 For more details, here are some YouTube videos
