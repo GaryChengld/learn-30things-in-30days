@@ -50,6 +50,17 @@ Using our previous e-commerce example, in a very high-level design a saga implem
 
 <img width="800" src="https://blog.couchbase.com/wp-content/uploads/2018/01/Screen-Shot-2017-12-30-at-1.39.21-PM-768x471.png" />
 
+A successful saga looks something like this :
+
+1. Start Saga
+2. Start T1
+3. End T1
+4. Start T2
+5. End T2
+6. Start T3
+7. End T3
+8. End Saga
+
 ## The ways to implement a saga transaction
 
 - **Events/Choreography:** when there is no central coordination, each service produces and listen to other service’s events and decides if an action should be taken or not.
@@ -60,9 +71,41 @@ Using our previous e-commerce example, in a very high-level design a saga implem
 
 <img width="800" src="https://microservices.io/i/data/Saga_Orchestration_Flow.001.jpeg" />
 
-## Rollbacks in distributed transactions
+## Rollbacks in saga transactions
 
+But things rarely go as straight. Sometimes, we might not be in a position to perform a transaction in the middle of the saga. At that point, the previously successful transactions would’ve already committed. For this, we apply compensatory transactions, for each transaction Ti, we implement a compensatory transaction Ci, which tries to semantically nullify Ti. It’s not always possible to get back to the exact same state. For example, if Ti involves sending out an email, we can’t really undo that. So we send a corrective email which semantically undoes Ti. So a failed saga looks something like this:
 
+1. Begin Saga
+2. Start T1
+3. End T1
+4. Start T2
+5. Abort Saga
+6. Start C2
+7. End C2
+8. Start C1
+9. End C1
+10. End Saga
+
+<img width="600" src="https://user-images.githubusercontent.com/3359299/47262751-95637c80-d4be-11e8-995a-d3afbe226fbc.PNG"/>
+
+## Saga Pattern Tips
+
+- Create a unique Id per Transaction
+- Add the reply address within the command
+- Idempotent operations
+- Avoiding Synchronous Communications
+
+## Saga behavior
+
+- On create:
+  - Invokes a saga participant
+- On reply:
+  - Determine which saga participant to invoke next
+  - Invokes saga participant
+  - Updates its state
+  - …
+  
+**Saga must complete even if there are transient failures**  
 
 ## Resources
 
