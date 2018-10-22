@@ -34,7 +34,7 @@ It consists of the follow steps:
  
 ## TripService
 
-### Create Spring-boot TripService project 
+**Create Spring-boot TripService project** 
 
 Open [Spring Initializr](https://start.spring.io/) page and setup project structure as below
 
@@ -274,6 +274,153 @@ public class TripCommandHandler {
     }
 }
 ```
+
+## Flight Service
+
+Similar to Trip service, create Flight service project in Spring Initializr.
+
+**Application properties**
+
+```yaml
+server:
+  port: 9081
+spring:
+  application:
+    name:
+      flight-service
+  jpa:
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.hibernate.SQL: DEBUG
+    io.eventuate: DEBUG
+    io.examples: DEBUG
+```
+
+**Flight Domain**
+
+```java
+@Entity
+@Table(name = "flights")
+@Access(AccessType.FIELD)
+public class Flight {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String flightNo;
+    private String flightDate;
+    private String from;
+    private String to;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFlightNo() {
+        return flightNo;
+    }
+
+    public void setFlightNo(String flightNo) {
+        this.flightNo = flightNo;
+    }
+
+    public String getFlightDate() {
+        return flightDate;
+    }
+
+    public void setFlightDate(String flightDate) {
+        this.flightDate = flightDate;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+}
+```    
+
+**Repository**
+```java
+public interface FlightRepository extends CrudRepository<Flight, Long> {
+    List<Flight> findByFromAndTo(String from, String to);
+}
+```
+
+**Service**
+```java
+@Service
+public class FlightService {
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    public Flight createFlight(Flight flight) {
+        return flightRepository.save(flight);
+    }
+
+    public Flight findFlightByFromAndTo(String from, String to) {
+        List<Flight> flights = flightRepository.findByFromAndTo(from, to);
+        if (flights.size() > 0) {
+            return flights.get(0);
+        } else {
+            return null;
+        }
+    }
+}
+```
+
+**FlightCommandHandler**
+
+```java
+@Component
+public class FlightCommandHandler {
+    @Autowired
+    private FlightService flightService;
+
+    public CommandHandlers commandHandlerDefinitions() {
+        return SagaCommandHandlersBuilder
+                .fromChannel("flightService")
+                .onMessage(BookFlightCommand.class, this::reserveCredit)
+                .build();
+    }
+
+    public Message reserveCredit(CommandMessage<BookFlightCommand> cm) {
+        BookFlightCommand cmd = cm.getCommand();
+        Flight flight = flightService.findFlightByFromAndTo(cmd.getFromCity(), cmd.getToCity());
+        if (flight != null) {
+            return withSuccess(new FlightBooked());
+        } else {
+            return withFailure(new FlightBookFailed());
+        }
+    }
+}
+```
+
+That's all for today, you can find the complete source code under [this folder](.).
+
+
+
+
 
 
 

@@ -1,0 +1,18 @@
+server:
+  port: 9081
+spring:
+  application:
+    name:
+      flight-service
+  jpa:
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.hibernate.SQL: DEBUG
+    io.eventuate: DEBUG
+    io.examples: DEBUG

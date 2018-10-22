@@ -9,5 +9,6 @@
 	<modules>
 		<module>flight-api</module>
 		<module>trip-service</module>
+		<module>flight-service</module>
 	</modules>
 </project>
