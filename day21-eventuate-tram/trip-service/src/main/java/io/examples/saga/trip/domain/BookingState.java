@@ -1,4 +1,4 @@
-package ip.examples.saga.trip.domain;
+package io.examples.saga.trip.domain;
 
 /**
  * @author Gary Cheng

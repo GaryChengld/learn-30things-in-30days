@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>io.examples.saga</groupId>
+	<artifactId>flight-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>flight-api</name>
+	<description>Demo project for Spring Boot</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<eventuate.client.version>0.20.1.RELEASE</eventuate.client.version>
+		<eventuatectram.version>0.7.0.RELEASE</eventuatectram.version>
+		<eventuate.tram.sagas.version>0.5.0.RELEASE</eventuate.tram.sagas.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.eventuate.tram.core</groupId>
+			<artifactId>eventuate-tram-commands</artifactId>
+			<version>${eventuatectram.version}</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>spring-libs</id>
+			<url>http://repo.spring.io/libs-release/</url>
+		</repository>
+	</repositories>
+
+</project>

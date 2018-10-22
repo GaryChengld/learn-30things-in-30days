@@ -87,6 +87,11 @@ logging:
 ```java
 @SpringBootApplication
 @Configuration
+@Import({TramEventsPublisherConfiguration.class,
+        TramCommandProducerConfiguration.class,
+        SagaOrchestratorConfiguration.class,
+        TramJdbcKafkaConfiguration.class,
+        SagaParticipantConfiguration.class})
 public class TripApplication {
 
     public static void main(String[] args) {
@@ -118,12 +123,30 @@ public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerName;
-    private String fromCity;
-    private String toCity;
-    private String tripDate;
     private BookingState bookingState;
+    @Embedded
+    private TripDetail tripDetail;
 
+    public Trip() {
+    }
+
+    public Trip(TripDetail tripDetail) {
+        this.tripDetail = tripDetail;
+        this.bookingState = BookingState.PENDING;
+    }
+
+    public static ResultWithEvents<Trip> createTrip(TripDetail orderDetails) {
+        return new ResultWithEvents<>(new Trip(orderDetails), Collections.emptyList());
+    }
+
+    public void flightBooked() {
+        this.bookingState = BookingState.APPROVED;
+    }
+
+    public void noteBookFlightFailed() {
+        this.bookingState = BookingState.REJECTED;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -132,44 +155,20 @@ public class Trip {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getFromCity() {
-        return fromCity;
-    }
-
-    public void setFromCity(String fromCity) {
-        this.fromCity = fromCity;
-    }
-
-    public String getToCity() {
-        return toCity;
-    }
-
-    public void setToCity(String toCity) {
-        this.toCity = toCity;
-    }
-
-    public String getTripDate() {
-        return tripDate;
-    }
-
-    public void setTripDate(String tripDate) {
-        this.tripDate = tripDate;
-    }
-
     public BookingState getBookingState() {
         return bookingState;
     }
 
     public void setBookingState(BookingState bookingState) {
         this.bookingState = bookingState;
+    }
+
+    public TripDetail getTripDetail() {
+        return tripDetail;
+    }
+
+    public void setTripDetail(TripDetail tripDetail) {
+        this.tripDetail = tripDetail;
     }
 }
 ```
@@ -180,6 +179,103 @@ public class Trip {
 public interface TripRepository extends CrudRepository<Trip, Long> {
 }
 ```
+
+**Saga Class**
+
+```java
+public class CreateTripSaga implements SimpleSaga<CreateTripSagaData> {
+    private SagaDefinition<CreateTripSagaData> sagaDefinition =
+            step()
+                    .withCompensation(this::reject)
+                    .step()
+                    .invokeParticipant(this::bookFlight)
+                    .step()
+                    .invokeParticipant(this::approve)
+                    .build();
+
+
+    @Override
+    public SagaDefinition<CreateTripSagaData> getSagaDefinition() {
+        return this.sagaDefinition;
+    }
+
+
+    private CommandWithDestination bookFlight(CreateTripSagaData data) {
+        long tripId = data.getTripId();
+        return send(new BookFlightCommand(tripId, data.getTripDetail().getTripDate(), data.getTripDetail().getFromCity(), data.getTripDetail().getToCity()))
+                .to("flightService")
+                .build();
+    }
+
+    public CommandWithDestination reject(CreateTripSagaData data) {
+        return send(new RejectTripCommand(data.getTripId()))
+                .to("orderService")
+                .build();
+    }
+
+    private CommandWithDestination approve(CreateTripSagaData data) {
+        return send(new ApproveTripCommand(data.getTripId()))
+                .to("orderService")
+                .build();
+    }
+}
+```
+
+**TripService class**
+
+```java
+@Service
+public class TripService {
+    @Autowired
+    private SagaManager<CreateTripSagaData> createTripSagaManager;
+
+    @Autowired
+    private TripRepository tripRepository;
+
+    @Transactional
+    public Trip createOrder(TripDetail tripDetail) {
+        ResultWithEvents<Trip> resultWithEvents = Trip.createTrip(tripDetail);
+        Trip trip = resultWithEvents.result;
+        tripRepository.save(trip);
+        CreateTripSagaData data = new CreateTripSagaData(trip.getId(), tripDetail);
+        createTripSagaManager.create(data, Trip.class, trip.getId());
+        return trip;
+    }
+}
+```
+
+**TripCommandHandler**
+
+```java
+public class TripCommandHandler {
+    @Autowired
+    private TripRepository tripRepository;
+
+    public CommandHandlers commandHandlerDefinitions() {
+        return SagaCommandHandlersBuilder
+                .fromChannel("orderService")
+                .onMessage(ApproveTripCommand.class, this::approve)
+                .onMessage(RejectTripCommand.class, this::reject)
+                .build();
+    }
+
+    public Message approve(CommandMessage<ApproveTripCommand> cm) {
+        long tripId = cm.getCommand().getTripId();
+        Trip trip = tripRepository.findById(tripId).get();
+        trip.flightBooked();
+        return withSuccess();
+    }
+
+    public Message reject(CommandMessage<RejectTripCommand> cm) {
+        long tripId = cm.getCommand().getTripId();
+        Trip trip = tripRepository.findById(tripId).get();
+        trip.noteBookFlightFailed();
+        return withSuccess();
+    }
+}
+```
+
+
 
 
 
