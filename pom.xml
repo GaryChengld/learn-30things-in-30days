@@ -14,5 +14,6 @@
     <module>day18-spring-zipkin</module>
     <module>day19-spring-actuator</module>
     <module>day21-eventuate-tram</module>
+    <module>day22-spring-swagger</module>
   </modules>
 </project>
