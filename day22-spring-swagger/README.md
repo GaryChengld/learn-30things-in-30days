@@ -418,3 +418,36 @@ Restart application and open http://localhost:9080/swagger-ui.html in browser
 Click pet-controller, it shows
 
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47329923-67a84000-d644-11e8-9b06-dd54cf2307d7.PNG" />
+
+## Annotations for REST Endpoints
+
+For each endpoint,  can use the @ApiOperation annotation to describe the endpoint and its response type, like this:
+
+```java
+@RestController
+@RequestMapping(value = "/v1/pet", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(value="petstore", description="Operations pertaining to petss in Online Store")
+public class PetController {
+    ...
+}    
+```
+
+```java
+    @ApiOperation(value = "Get Pet by ID", response = Product.class)
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successfully retrieved pet"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> byId(@PathVariable("id") Integer id) {
+        return productRepository.getProductById(id)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElse(RESP_PET_NOT_FOUND);
+    }
+```
+
+Restart application, in swagger UI, click Get Pet By ID request, it shows
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47334025-5286dd80-d653-11e8-8689-33b99625e4e0.PNG" />
+
+That's all for today, you can find the complete source code under [this folder](.).

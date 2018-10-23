@@ -5,6 +5,8 @@ import io.examples.spring.swagger.petstore.common.ApiResponse;
 import io.examples.spring.swagger.petstore.common.ApiResponses;
 import io.examples.spring.swagger.petstore.entity.Product;
 import io.examples.spring.swagger.petstore.repository.ProductRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/v1/pet", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(value = "petstore", description = "Operations pertaining to petss in Online Store")
 public class PetController {
     private static final ResponseEntity<ApiResponse> RESP_PET_NOT_FOUND
             = new ResponseEntity<>(ApiResponses.ERR_PET_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -38,6 +41,11 @@ public class PetController {
         return productRepository.getProducts();
     }
 
+    @ApiOperation(value = "Get Pet by ID", response = Product.class)
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successfully retrieved pet"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> byId(@PathVariable("id") Integer id) {
         return productRepository.getProductById(id)
