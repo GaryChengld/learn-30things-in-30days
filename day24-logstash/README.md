@@ -1,0 +1,1 @@
+Day 24: Logstash - Collect, Parse, Transform Logs
