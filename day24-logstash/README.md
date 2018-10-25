@@ -70,7 +70,7 @@ The ELK Stack is a collection of open-source products — Elasticsearch,Logstash
 
 Create a logstash-tomcat.conf for tomcat access log
 
-```json
+```
 input {
   file {
     path => "C:\Development\apache-tomcat-8.0.21\logs\localhost_access_log.txt"
