@@ -11,7 +11,7 @@ The ELK Stack is a collection of open-source products — Elasticsearch,Logstash
 - Kibana - a visualization layer that works on top of Elasticsearch. 
 - Filebeat - Installed on client servers that will send their logs to Logstash, Filebeat serves as a log shipping agent that utilizes the lumberjack networking protocol to communicate with Logstash
  
-## Install Kibana on windows
+## Install and start Kibana on windows
 
 - Download Kibana from [Kibana downloadpage](https://www.elastic.co/downloads/kibana)
 - Unzip Kibana windows package to local directory.
@@ -61,5 +61,46 @@ The ELK Stack is a collection of open-source products — Elasticsearch,Logstash
    
   <img width="880" src="https://user-images.githubusercontent.com/3359299/47475719-ce675e00-d7ea-11e8-84ad-54d4187582de.PNG" />
   
-## Install Logstash on windows      
+## Install Logstash on windows    
+
+- Download Logstash from [download page](https://www.elastic.co/downloads/logstash) 
+- Unzip Kibana windows package to local directory.
+
+## Config Logstash input 
+
+Create a logstash-tomcat.conf for tomcat access log
+
+```json
+input {
+  file {
+    path => "C:\Development\apache-tomcat-8.0.21\logs\localhost_access_log.txt"
+    start_position => "beginning"
+  }
+}
+
+filter {
+  if [path] =~ "access" {
+    mutate { replace => { "type" => "apache_access" } }
+    grok {
+      match => { "message" => "%{COMBINEDAPACHELOG}" }
+    }
+  }
+  date {
+    match => [ "timestamp" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["localhost:9200"]
+  }
+  stdout { codec => rubydebug }
+}
+```
+
+Then start logstash by command
+
+>bin\logstash.bat -f config\logstash-tomcat.conf
+
+Now we should see apache log data in Elasticsearch! Logstash opened and read the specified input file, processing each event it encountered. Any additional lines logged to this file will also be captured, processed by Logstash as events, and stored in Elasticsearch. As an added bonus, they are stashed with the field "type" set to "apache_access" (this is done by the type ⇒ "apache_access" line in the input configuration).
 
