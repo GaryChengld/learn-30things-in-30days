@@ -1,4 +1,4 @@
-package io.examples.spring.petstore.entity;
+package io.examples.spring.hateoas.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

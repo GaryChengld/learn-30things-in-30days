@@ -1,7 +1,7 @@
-package io.examples.spring.petstore.repository;
+package io.examples.spring.hateoas.repository;
 
-import io.examples.spring.petstore.entity.Product;
-import io.examples.spring.petstore.repository.impl.InMemoryProductRepository;
+import io.examples.spring.hateoas.entity.Product;
+import io.examples.spring.hateoas.repository.impl.InMemoryProductRepository;
 
 import java.util.List;
 import java.util.Optional;

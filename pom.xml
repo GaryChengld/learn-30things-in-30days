@@ -16,5 +16,6 @@
     <module>day21-eventuate-tram</module>
     <module>day22-spring-swagger</module>
     <module>day23-micronaut/petstore</module>
+    <module>day25-HATEOAS</module>
   </modules>
 </project>

@@ -1,6 +1,6 @@
-package io.examples.spring.petstore.repository;
+package io.examples.spring.hateoas.repository;
 
-import io.examples.spring.petstore.entity.Product;
+import io.examples.spring.hateoas.entity.Product;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

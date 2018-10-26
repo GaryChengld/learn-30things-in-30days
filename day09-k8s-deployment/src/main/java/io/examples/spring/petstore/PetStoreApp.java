@@ -1,6 +1,6 @@
-package io.examples.spring.petstore;
+package io.examples.spring.hateoas;
 
-import io.examples.spring.petstore.repository.FluxProductRepository;
+import io.examples.spring.hateoas.repository.FluxProductRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

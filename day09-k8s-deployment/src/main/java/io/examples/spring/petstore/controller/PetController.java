@@ -1,10 +1,10 @@
-package io.examples.spring.petstore.controller;
+package io.examples.spring.hateoas.controller;
 
 
-import io.examples.spring.petstore.common.ApiResponse;
-import io.examples.spring.petstore.common.ApiResponses;
-import io.examples.spring.petstore.entity.Product;
-import io.examples.spring.petstore.repository.FluxProductRepository;
+import io.examples.spring.hateoas.common.ApiResponse;
+import io.examples.spring.hateoas.common.ApiResponses;
+import io.examples.spring.hateoas.entity.Product;
+import io.examples.spring.hateoas.repository.FluxProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

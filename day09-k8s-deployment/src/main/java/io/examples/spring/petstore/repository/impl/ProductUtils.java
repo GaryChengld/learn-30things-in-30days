@@ -1,6 +1,6 @@
-package io.examples.spring.petstore.repository.impl;
+package io.examples.spring.hateoas.repository.impl;
 
-import io.examples.spring.petstore.entity.Product;
+import io.examples.spring.hateoas.entity.Product;
 
 import java.util.Collection;
 import java.util.HashSet;
