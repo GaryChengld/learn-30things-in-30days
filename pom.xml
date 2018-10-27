@@ -17,5 +17,6 @@
     <module>day22-spring-swagger</module>
     <module>day23-micronaut/petstore</module>
     <module>day25-HATEOAS</module>
+    <module>day26-rest-upload</module>
   </modules>
 </project>
