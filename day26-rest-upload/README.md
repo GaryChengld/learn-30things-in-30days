@@ -188,3 +188,12 @@ And the file is stored in directory C:\tmp\files\uploads
     }
 ```
 
+**Test result**
+- Open Postman
+  - Method: GET
+  - URL: http://localhost:9080/v1/file/download/sandupetrasco.png
+  
+  <img width="880" src="https://user-images.githubusercontent.com/3359299/47599499-701eb480-d97d-11e8-9f54-b841f4b2a198.PNG" />
+  
+ That's all for today, you can find the complete source code under [this folder](.).  
+
