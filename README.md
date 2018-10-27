@@ -32,3 +32,4 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 24 (2018-10-24) - Logstash: Collect, Parse, Transform Logs](day24-logstash/README.md)
  - [Day 25 (2018-10-25) - HATEOAS RESTful service with Spring Boot](day25-HATEOAS/README.md)
  - [Day 26 (2018-10-26) - Upload/download file in Restful service](day26-rest-upload/README.md)
+ - [Day 27 (2018-10-27) - Implement CQRS using Axon framework](day27-CQRS-axon/README.md)
