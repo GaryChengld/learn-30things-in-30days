@@ -125,7 +125,7 @@ public class CreateProductCommand {
 ```
 
 #### controller
->
+>PetController.java
 ```java
 @Slf4j
 @RestController
@@ -156,6 +156,64 @@ public class PetController {
     public CompletableFuture<String> createProduct(@RequestBody Map<String, String> request) {
         String id = UUID.randomUUID().toString();
         return commandGateway.send(new CreateProductCommand(id, request.get("name"), request.get("category")));
+    }
+}
+```
+
+#### Aggregate
+>Product.java
+```java
+@Aggregate
+public class Product {
+    @AggregateIdentifier
+    private String productId;
+
+    public Product() {
+    }
+
+    @CommandHandler
+    public Product(CreateProductCommand command) {
+        Assert.hasLength(command.getName(), "Product name can't be empty");
+        apply(new ProductCreateEvent(command.getId(), command.getName(), command.getCategory()));
+    }
+
+    @EventSourcingHandler
+    protected void on(ProductCreateEvent event) {
+        this.productId = event.getId();
+    }
+}
+```
+
+#### Spring boot application class
+>PetstoreApplication
+```java
+@SpringBootApplication
+public class PetstoreApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(PetstoreApplication.class, args);
+    }
+
+    @Bean
+    public Exchange exchange() {
+        return ExchangeBuilder.fanoutExchange("Products").build();
+    }
+
+    @Bean
+    public Queue queue() {
+        return QueueBuilder.durable("Products").build();
+    }
+
+    @Bean
+    public Binding binding() {
+        return BindingBuilder.bind(queue()).to(exchange()).with("*").noargs();
+    }
+
+    @Autowired
+    public void configure(AmqpAdmin admin) {
+        admin.declareExchange(exchange());
+        admin.declareQueue(queue());
+        admin.declareBinding(binding());
     }
 }
 ```
