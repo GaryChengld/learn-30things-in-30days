@@ -18,5 +18,6 @@
     <module>day23-micronaut/petstore</module>
     <module>day25-HATEOAS</module>
     <module>day26-rest-upload</module>
+    <module>day27-CQRS-axon/apps/cqrs-petstore</module>
   </modules>
 </project>
