@@ -120,7 +120,7 @@ This example will create 2 spring cloud application, service1 and service2, serv
 ```yaml
 spring:
   application:
-    name: service1
+    name: service2
 ```    
 
 >application.yaml
@@ -139,7 +139,70 @@ management:
     web:
       exposure:
         include: "health"
-```        
+```
 
+**Service result**
+>Service2Result.java
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Service2Result {
+    private String name;
+    private String message;
+}
+```
 
+**Controller**
+>
+```java
+@RequestMapping("/v1/service2")
+@RestController
+public class Service2Controller {
+
+    @GetMapping
+    public Mono<Service2Result> service2() {
+        return Mono.just(new Service2Result("service2", "Welcome to service2"));
+    }
+}
+```
+
+**Application class**
+>Service2Application.java
+```java
+package io.example.consul.service2;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class Service2Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Service2Application.class, args);
+	}
+}
+```
+
+**Run Service2**
+Start application by command
+>mvn spring-boot:run
+
+Open http://localhost:9081/v1/service2 in browser, it shows
+```json
+{
+    "name": "service2",
+    "message": "Welcome to service2"
+}
+```
+
+And service2 is registered in Consul
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47625103-599d6800-daf9-11e8-9d1c-272456d9ee25.PNG" />
+
+Detail page
+
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47625104-5ace9500-daf9-11e8-83b4-ba39d4c0e227.PNG" />
 
