@@ -19,5 +19,6 @@
     <module>day25-HATEOAS</module>
     <module>day26-rest-upload</module>
     <module>day27-CQRS-axon/apps/cqrs-petstore</module>
+    <module>day28-consul-spring/examples</module>
   </modules>
 </project>
