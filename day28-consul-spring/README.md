@@ -200,9 +200,11 @@ Open http://localhost:9081/v1/service2 in browser, it shows
 
 And service2 is registered in Consul
 
+- Services page
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47625103-599d6800-daf9-11e8-9d1c-272456d9ee25.PNG" />
 
-Detail page
-
+- Detail page
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47625104-5ace9500-daf9-11e8-83b4-ba39d4c0e227.PNG" />
 
+- Health check page
+<img width="880" src="https://user-images.githubusercontent.com/3359299/47625288-9cac0b00-dafa-11e8-8da0-6cfc3558194b.PNG" />
