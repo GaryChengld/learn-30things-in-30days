@@ -78,7 +78,7 @@ The http admin UI is start on port 8500, open URL http://localhost:8500 in brows
 
 This example will create 2 spring cloud application, service1 and service2, service1 get service2 endpoint by consul and call this endpoint to build service1 result.
 
-### Create service1
+### Create service2
 
 **Maven dependencies**
 >pom.xml
@@ -208,3 +208,163 @@ And service2 is registered in Consul
 
 - Health check page
 <img width="880" src="https://user-images.githubusercontent.com/3359299/47625288-9cac0b00-dafa-11e8-8da0-6cfc3558194b.PNG" />
+
+### Create service1
+
+Service1 will get service2 endpoint from consul by service2's name
+
+The maven dependencies are the same as service2
+
+**Application configure**
+>bootstrap.yml
+```yaml
+spring:
+  application:
+    name: service1
+```    
+
+>application.yaml
+```yaml
+server:
+  port: 9080
+
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+```
+
+**Service result**
+>Service1Result.java
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Service1Result {
+    private String name;
+    private String message;
+    @JsonProperty("service2 result")
+    private Service2Result service2Result;
+}
+
+```
+>Service2Result.java
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Service2Result {
+    private String name;
+    private String message;
+}
+```
+
+**Controller**
+>Service1Controller.java
+```java
+@RequestMapping("/v1/service1")
+@RestController
+@Slf4j
+public class Service1Controller {
+    private String SERVICE2_URL = "http://service2/v1/service2";
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    @GetMapping
+    public Mono<Service1Result> service2() {
+        log.info("Received service1 request");
+        return this.rxBuildData();
+    }
+
+    private Mono<Service1Result> rxBuildData() {
+        Service1Result service1Result = new Service1Result();
+        service1Result.setName("service1");
+        service1Result.setMessage("Welcome to service1");
+        log.info("Sending service request");
+        return Mono.create(emitter ->
+                webClientBuilder.build().get().uri(SERVICE2_URL).exchange()
+                        .flatMap(res -> res.bodyToMono(Service2Result.class))
+                        .doOnError(ex -> {
+                            log.error(ex.getLocalizedMessage());
+                            service1Result.setService2Result(new Service2Result("service2", ex.getLocalizedMessage()));
+                            emitter.success(service1Result);
+                        })
+                        .subscribe(serviceData -> {
+                            log.info("Received service data:{}", serviceData.toString());
+                            service1Result.setService2Result(serviceData);
+                            emitter.success(service1Result);
+                        })
+        );
+    }
+}
+```
+
+**Application**
+>Service1Application.java
+```java
+package io.example.consul.service1;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class Service1Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Service1Application.class, args);
+    }
+
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
+    }
+}
+```
+
+**Run service1**
+
+Keep service2 running, and open a command prompt, run command
+>mvn spring-boot:run
+
+Open http://localhost:9080/v1/service1 in browser, it shows
+```json
+{
+    "name": "service1",
+    "message": "Welcome to service1",
+    "service2 result": {
+        "name": "service2",
+        "message": "Welcome to service2"
+    }
+}
+```
+
+Stop service2, and open same url in browser, it shows
+
+```json
+{
+    "name": "service1",
+    "message": "Welcome to service1",
+    "service2 result": {
+        "name": "service2",
+        "message": "Connection refused: no further information: localhost/127.0.0.1:9081"
+    }
+}
+```
+
+ That's all for today, you can find the complete source code under [this folder](examples).  
+
+
