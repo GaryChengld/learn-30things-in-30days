@@ -34,4 +34,4 @@ I'm taking a challenge and will learn a technology a day for 30 days, the challe
  - [Day 26 (2018-10-26) - Upload/download file in Restful service](day26-rest-upload/README.md)
  - [Day 27 (2018-10-27) - Implement CQRS using Axon framework](day27-CQRS-axon/README.md)
  - [Day 28 (2018-10-28) - Using consul as Service Discovery in Spring Cloud](day28-consul-spring/README.md)
- - [Day 29 (2018-10-29) - Mcroservice with Apache Camel](day29-camel-rest/README.md)
+ - [Day 29 (2018-10-29) - Mcroservices with Apache Camel](day29-camel-rest/README.md)
