@@ -1,0 +1,7 @@
+camel:
+  springboot:
+    main-run-controller: true
+
+logging:
+  level:
+    io.examples: DEBUG

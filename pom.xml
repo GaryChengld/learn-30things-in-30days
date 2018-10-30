@@ -20,5 +20,6 @@
     <module>day26-rest-upload</module>
     <module>day27-CQRS-axon/apps/cqrs-petstore</module>
     <module>day28-consul-spring/examples</module>
+    <module>day29-camel-rest</module>
   </modules>
 </project>
