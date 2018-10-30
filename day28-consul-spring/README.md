@@ -25,6 +25,7 @@ Go to Consul [download page](https://www.consul.io/downloads.html), download win
 - Go to consul directory
 - Execute command
 >consul agent -dev -bind=127.0.0.1 -data-dir=\tmp\consul -server -ui
+
 in command prompt, it displays
 ```
 C:\Development\consul>consul agent -dev -bind=127.0.0.1 -data-dir=\tmp\consul -server -ui
