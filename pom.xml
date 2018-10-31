@@ -21,5 +21,6 @@
     <module>day27-CQRS-axon/apps/cqrs-petstore</module>
     <module>day28-consul-spring/examples</module>
     <module>day29-camel-rest</module>
+    <module>day30-helidon/petstore</module>
   </modules>
 </project>
