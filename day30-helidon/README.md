@@ -429,4 +429,4 @@ The service is started on port 9080
 }
 ```
 
- That's all for today, you can find the complete source code under [this folder](.). 
+ That's all for today, you can find the complete source code under [this folder](petstore). 
